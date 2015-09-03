@@ -1,0 +1,53 @@
+
+
+# para extraer la lista de llaves a partir del listado de archivos
+# (los 172)
+
+# partirlos por el '.', quedarnos con el tercer segmento 
+ e.g.:
+
+unc.edu.7391b882-0be5-45b0-aa01-43c3381a476d.1157721.mas.cosas.etc.txt
+
+->
+
+7391b882-0be5-45b0-aa01-43c3381a476d
+
+$ ls | awk -F '.' '{print $3}' | sort | uniq > keys.txt
+
+
+ahora keys.txt tiene una llave por cada ID
+
+
+
+
+
+
+
+
+
+# extraer TODAS las llaves del manifiesto
+awk '{print $1,$2}' unc.edu_BRCA.IlluminaHiSeq_RNASeqV2.1.12.0.sdrf.txt > all_keys_tcgaIDs.tsv
+
+
+
+
+
+
+
+
+
+
+# extraer nuestras llaves de todas las llaves
+grep -w -f keys.txt all_keys_tcgaIDs.tsv | sort | uniq > keys_tcgaIDs.tsv
+
+
+
+
+
+keys_tcgaIDs.tsv guarda la relacion entre el ID grandote y el ID chiquito
+
+
+
+
+
+copiamos keys_tcgaIDs.tsv a rename*.sh, le hacemos el macro de emacs.
