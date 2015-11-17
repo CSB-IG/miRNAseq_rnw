@@ -6,6 +6,7 @@ colnames(x) <-rownames(x)
 
 # x must be a numeric matrix and symmetric
 class(x)
+class(x[1,1])
 isSymmetric(x)
 
 # set a copy of x as q
