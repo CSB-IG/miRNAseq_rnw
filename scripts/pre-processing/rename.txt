@@ -1,0 +1,33 @@
+#cambiar nombre primera columna
+
+#crear lista de archivos .txt
+
+$ ls | sort | uniq > filenames.txt
+
+
+#crear lista de codigos por columna
+
+$ ls | awk -F '-' '{print $3}' | uniq > code.txt
+
+
+#nombre del nuevo arhivo (revisar todos los archivos en emacs para que todos tengan misma longitud)
+
+$ ls | awk -F '.' '{print $1}' | sort | uniq > code2.txt
+
+
+#crear nuevo arhivo
+
+$ paste -d ' ' filenames.txt code.txt code2.txt > lista.tsv 
+
+
+#convertir a .sh
+
+$ cp lista.tsv  rename_col_RNAseq753.sh
+
+
+#crear macro de emacs
+
+< ejemplo.txt sed '1c\new_heading' > ejemplo2.txt
+
+
+#ejecutar .sh
