@@ -3,7 +3,7 @@
 x <- read.table("RNAseq_752_filtered.txt", header = T)
 
 # gene ID list
-# the gene ID: SLC35E2 entry is repeated, modify second SLC35E2|728661 entry -> to SLC35E2B
+# the gene ID: SLC35E2 entry is repeated, modify first SLC35E2|728661 entry -> to SLC35E2B
 # for GENEID names (if header): ID <- scan("GENEID_filtro.txt", what = "", sep="\t", skip = 1)
 ID <- scan("GENEID_filtro.txt", what = "", sep="\t")
 
