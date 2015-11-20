@@ -1,6 +1,6 @@
 
 library(plyr)
-
+library(NOISeq)
 
 
 # read expression matrices that were used for mi computation
@@ -11,8 +11,10 @@ sanos <- read.table(file = "sanos.86.txt", header = T, sep = '\t')
 enfermos <- as.vector(enfermos[ ,1])
 sanos <- as.vector(sanos[ ,1])
 
-# gene list from genes in common and genes that were filtered but inclued in one of the lists
-genes <- sort(unique(c(enfermos, sanos)))
+
+# gene list from genes in common
+genes <- sort(intersect(enfermos, sanos))
+
 
 # read expression matrices before filtering 
 enfermos <- read.csv("RNAseq_norm_casos_86.csv")
@@ -47,26 +49,32 @@ str(x)
 head(assayData(x)$exprs)
 head(pData(x))
 
+# QC report
+QCreport(x, samples = NULL, factor = "Pacientes", norm = FALSE)
+
 # differential expression
 exp <- noiseq(x, factor="Pacientes", k=NULL, norm="n", pnr= 0.2, nss= 5, v=0.02, lc=1, replicates = "no") 
 head(exp@results[[1]])
 
 # differential expressed genes
-exp.deg = degenes(exp, q = 0.9, M = NULL)
+exp.deg = degenes(exp, q = 0.7, M = NULL)
 
 # up-regulated in first condition
-exp.deg1 = degenes(exp, q = 0.9, M = "up")
+exp.deg1 = degenes(exp, q = 0.7, M = "up")
 
 # down-regulated in first condition
-exp.deg1 = degenes(exp, q = 0.9, M = "down")
+exp.deg1 = degenes(exp, q = 0.7, M = "down")
 
 # plot
 pdf("exp_plot.pdf",width=14,height=10)
-plot
+DE.plot(exp, q=0.7, graphic="expr", log.scale=TRUE)
+dev.off()
+pdf("MD_plot.pdf",width=14,height=10)
+DE.plot(exp, q=0.7, graphic="MD")
 dev.off()
 
 # save results
-write.table(exp@results, file = "dif_exp_RNAseq_todo.txt", sep = "\t", col.names= T, row.names= T, quote = F )
+write.table(exp.deg, file = "dif_exp_RNAseq.txt", sep = "\t", col.names= T, row.names= T, quote = F )
 
 
 
