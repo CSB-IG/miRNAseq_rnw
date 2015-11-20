@@ -6,4 +6,6 @@
 # for table: node node interaction ($3 = mi value)
 THRESHOLD=$1
 
+
 awk -F'\t' "\$3 > $THRESHOLD {print \$1\"\t\"\$2\"\t\"\$3}" $2
+
