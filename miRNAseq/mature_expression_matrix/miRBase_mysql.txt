@@ -1,0 +1,61 @@
+
+
+perl /home/diana/mirna/v0.2.7/code/custom_output/tcga/create_adf.pl -m mirnadb -o hsa -g hg\_19 -v mirbase21 > miRNA_ADF
+
+server 
+
+
+create local server database (for miRBase version 21):
+
+# in download directory
+
+wget -rnp wget ftp://mirbase.org/pub/mirbase/21/database_files/
+wget -np wget ftp://mirbase.org/pub/mirbase/21/database_files/*
+
+mysql -u <username> -p <database> < tables.sql
+
+mysqlimport -u <username> -p <database> -L *txt
+
+mysql -u <username> -p <database>
+
+
+
+
+wget -rnp wget ftp://mirbase.org/pub/mirbase/21/database_files/
+wget -np wget ftp://mirbase.org/pub/mirbase/21/database_files/*
+
+mysql -u ddrago -p mirnadb < tables.sql
+
+mysqlimport -u ddrago -p mirnadb -L *txt
+
+mirnadb localhost ddrago <password>
+
+
+# dir with all \*.isoform.quantification.txt files can be found
+/home/diana/TCGA_miRNA_BC/datos_tumor_Hiseq-miRNAseq_RNAseqV2_753/753muestras_tumor_miRNA_mRNA/TCGA_datos_sin_tratar753/753_tumormiRNA
+
+# saves matrices in *.isoforms directory
+
+perl /home/diana/mirna/v0.2.7/code/custom_output/tcga/expression_matrix_mimat.pl -m <miRNA_adf_file> -p <Level_3_archive_directory>
+
+perl /home/diana/mirna/v0.2.7/code/custom_output/tcga/expression_matrix_mimat.pl -m /home/diana/miRNA_ADF -p /home/diana/TCGA_miRNA_BC/datos_tumor_Hiseq-miRNAseq_RNAseqV2_753/753muestras_tumor_miRNA_mRNA/TCGA_datos_sin_tratar753/753_tumormiRNA
+
+
+3 versions of the expression matrix are created.
+expn_matrix_mimat.txt: matrix with raw read counts
+expn_matrix_mimat_norm.txt: matrix with normalized counts (counts per million mature miRNA aligned tags)
+expn_matrix_mimat_norm_log.txt: as above, but values are taken to log2 (log(0) is written out as 0)
+
+
+R
+x <- read.table(file="expn_matrix_mimat.txt", sep="\t", header=T, row.names=1)
+> dim(x)
+[1] 2588  753
+
+names1 <- gsub('.{13}$', '', names)
+names2 <- substring(names1, 7)
+
+colnames(x) <- names2
+
+# save final expression matrix
+write.table(x, quote = F, sep = "\t", row.names = T, col.names = NA, file = "miRNAs_753_maduros.txt")
