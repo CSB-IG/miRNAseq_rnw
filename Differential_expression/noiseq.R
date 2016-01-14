@@ -57,13 +57,13 @@ exp <- noiseq(x, factor="Pacientes", k=NULL, norm="n", pnr= 0.2, nss= 5, v=0.02,
 head(exp@results[[1]])
 
 # differential expressed genes
-exp.deg = degenes(exp, q = 0.7, M = NULL)
+exp.deg = degenes(exp, q = 0.8, M = NULL)
 
 # up-regulated in first condition
-exp.deg1 = degenes(exp, q = 0.7, M = "up")
+exp.deg1 = degenes(exp, q = 0.8, M = "up")
 
 # down-regulated in first condition
-exp.deg1 = degenes(exp, q = 0.7, M = "down")
+exp.deg1 = degenes(exp, q = 0.8, M = "down")
 
 # plot
 pdf("exp_plot.pdf",width=14,height=10)
