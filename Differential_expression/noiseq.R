@@ -53,24 +53,24 @@ head(pData(x))
 QCreport(x, samples = NULL, factor = "Pacientes", norm = FALSE)
 
 # differential expression
-exp <- noiseq(x, factor="Pacientes", k=NULL, norm="n", pnr= 0.2, nss= 5, v=0.02, lc=1, replicates = "no") 
+exp <- noiseqbio(x, factor="Pacientes", k=0.5, norm="n", r= 20, adj = 1.5, lc = 1, plot = FALSE, a0per = 0.9, random.seed = 12345, filter = 2) 
 head(exp@results[[1]])
 
 # differential expressed genes
-exp.deg = degenes(exp, q = 0.8, M = NULL)
+exp.deg = degenes(exp, q = 0.95, M = NULL)
 
 # up-regulated in first condition
-exp.deg1 = degenes(exp, q = 0.8, M = "up")
+exp.deg1 = degenes(exp, q = 0.95, M = "up")
 
 # down-regulated in first condition
-exp.deg1 = degenes(exp, q = 0.8, M = "down")
+exp.deg1 = degenes(exp, q = 0.95, M = "down")
 
 # plot
 pdf("exp_plot.pdf",width=14,height=10)
-DE.plot(exp, q=0.7, graphic="expr", log.scale=TRUE)
+DE.plot(exp, q=0.95, graphic="expr", log.scale=TRUE)
 dev.off()
 pdf("MD_plot.pdf",width=14,height=10)
-DE.plot(exp, q=0.7, graphic="MD")
+DE.plot(exp, q=0.95, graphic="MD")
 dev.off()
 
 # save results
