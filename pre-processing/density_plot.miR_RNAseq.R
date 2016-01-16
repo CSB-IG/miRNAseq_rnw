@@ -1,34 +1,52 @@
-# read expression matrix
-x <- read.csv("miRNAseq_norm_casos_752.csv")
+# x <- expression matrix raw mature miRNAseq counts
+# xn <- expression matrix normalized mature miRNAseq counts
 
 library(ggplot2)
 library(reshape2)
 
-#turn 0 to NA: df[df == 0] <- NA
-x[x == 0] <- NA
+# turn 0 to NA: df[df == 0] <- NA
+# x[x == 0] <- NA
 
 #log10 transfomation and ID col
-M1 <- log10(x)
+# M1 <- log10(x)
 
-# bind ID list
-ID <- read.table("miR_IDs", header = TRUE)
-M2 <- cbind(ID, M1)
+# set colnames as first column
+# M2 <- cbind(rownames(M1), M1)
 
-#turn NA to 0: x[is.na(x)] <- 0
-#M2[is.na(M2)] <- 0
+# delete rownames from data.frame
+# rownames(M2) <- NULL
 
-#nullify outlier: Matrix$col <- NULL
-M2$A245 <- NULL
+# turn NA to 0: x[is.na(x)] <- 0
+# M2[is.na(M2)] <- 0
 
-#input for density plots
-l2 = melt(M2)
+# nullify outlier: Matrix$col <- NULL
+# M2$A245.01 <- NULL
 
-#single plot
-#ggplot(na.omit(l2), aes(x = value)) + geom_density(color = rainbow)
+# set variable name
+# colnames(M2)[1] <- "ID"
+
+# input for density plots
+# l2 = melt(M2)
+
+# density plot function
+densityplot <- function(g){
+  M1 <- log10(g+1)
+  M2 <- cbind(rownames(M1), M1)
+  rownames(M2) <- NULL
+  colnames(M2)[1] <- "ID"
+  l2 = melt(M2)
+  l2
+}
+
+# x1 <- densityplot(x)
+
+# single plot
+# ggplot(na.omit(x1), aes(x = value)) + geom_density(color = rainbow)
 
 #overlayed plots
-ggplot(na.omit(l2), aes(value)) + geom_density(aes(group = variable))
+pdf("raw.miRNA.753.pdf",width=10,height=10)
+ggplot(na.omit(x1), aes(value)) + geom_density(aes(group = variable))
+dev.off()
 
 #different plots
-#ggplot(na.omit(l2), aes (value)) + geom_density() + facet_wrap(~variable)
-
+#ggplot(na.omit(x1), aes (value)) + geom_density() + facet_wrap(~variable)
