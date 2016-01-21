@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# PRUNEE must be a sif file created from concatenating the tail of a collection of .adjs
 # prints pruned to STDOUT
 # usage: pruner.sh THRESHOLD PRUNEE
 # prune by mi value, ej. 0.101
