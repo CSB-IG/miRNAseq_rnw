@@ -4,15 +4,16 @@
 
 library(limma)
 library(edgeR)
-read miRNAs_752_maduros_filtro.txt
+
+# read miRNAs_752_maduros_filtro.txt
 miRNA <- read.table("miRNAs_752_maduros_filtro.txt", sep="\t", header=T, row.names=1)
 
 # x = expression matrix
 # groups = factors(list)
 # y = output
 
-equal library sizes
-object: DGEList
+y = object: DGEList
+
 object dispersion numeric vector of dispersion parameters.  By default, is extracted from
 object or, if object contains no dispersion information, is set to 0.05
 common.lib.size numeric scalar, the library size to normalize to; default is the geometric mean of
@@ -22,7 +23,7 @@ the original effective library sizes
 > group <- factor(c(1,1,2,2))
 > y <- DGEList(counts=x,group=group)
 > out <- equalizeLibSizes(object, dispersion=NULL, common.lib.size)
-> y <- calcNormFactors(y)
+> y <- calcNormFactors(y, method="TMM, UQ, etc..")
 > cpm.tmm <- cpm(y, normalized.lib.sizes=T)
 
 "The effective library size is then the original library size multiplied by the scaling factor"
@@ -34,7 +35,7 @@ the original effective library sizes"
 # x = miRNA
 group <- factor(c(rep('enfermos', 752)))
 y <- DGEList(counts=miRNA,group=group)
-out <- equalizeLibSizes(y)
+# out <- equalizeLibSizes(y)
 yTMM <- calcNormFactors(y, method="TMM")
 yUQ <- calcNormFactors(y, method="upperquartile")
 
@@ -53,6 +54,7 @@ y1UQ <- DGEList(counts=UQ,group=group)
 y1UQTMM <- calcNormFactors(y1UQ, method="TMM")  
 UQTMM <- cpm(y1UQTMM, normalized.lib.sizes=T)
 
+# density plot
 library(ggplot2)
 library(reshape2)
 
@@ -61,40 +63,34 @@ UQ <- as.data.frame(UQ)
 TMMUQ <- as.data.frame(TMMUQ)
 UQTMM <- as.data.frame(UQTMM)
 
-TMM[TMM == 0] <- NA
-UQ[UQ == 0] <- NA
-TMMUQ[TMMUQ == 0] <- NA
-UQTMM[UQTMM == 0] <- NA
-TM1 <- log10(TMM)
-UM1 <- log10(UQ)
-TUM1 <- log10(TMMUQ)
-UTM1 <- log10(UQTMM)
-TM2 <- cbind(rownames(TM1), TM1)
-UM2 <- cbind(rownames(UM1), UM1)
-TUM2 <- cbind(rownames(TUM1), TUM1)
-UTM2 <- cbind(rownames(UTM1), UTM1)
-rownames(TM2) <- NULL
-rownames(UM2) <- NULL
-rownames(TUM2) <- NULL
-rownames(UTM2) <- NULL
-colnames(TM2)[1] <- "ID"
-colnames(UM2)[1] <- "ID"
-colnames(TUM2)[1] <- "ID"
-colnames(UTM2)[1] <- "ID"
-Tl2 = melt(TM2)
-Ul2 = melt(UM2)
-TUl2 = melt(TUM2)
-UTl2 = melt(UTM2)
-pdf("TMM.miRNA.753.pdf",width=10,height=10)
-ggplot(na.omit(Tl2), aes(value)) + geom_density(aes(group = variable))
+densityplot <- function(g){
+  M1 <- log10(g+1)
+  M2 <- cbind(rownames(M1), M1)
+  rownames(M2) <- NULL
+  colnames(M2)[1] <- "ID"
+  l2 = melt(M2)
+  l2
+}
+
+
+T1 <- densityplot(TMM)
+U1 <- densityplot(UQ)
+TU1 <- densityplot(TMMUQ)
+UT1 <- densityplot(UQTMM)
+M <- densityplot(miRNA)
+
+pdf("TMM1.miRNA.753.pdf",width=10,height=10)
+ggplot(T1, aes(value)) + geom_density(aes(group = variable))
 dev.off()
-pdf("UQ.miRNA.753.pdf",width=10,height=10)
-ggplot(na.omit(Ul2), aes(value)) + geom_density(aes(group = variable))
+
+pdf("UQ0.miRNA.753.pdf",width=10,height=10)
+ggplot(U1, aes(value)) + geom_density(aes(group = variable))
 dev.off()
-pdf("TMMUQ.miRNA.753.pdf",width=10,height=10)
-ggplot(na.omit(TUl2), aes(value)) + geom_density(aes(group = variable))
+
+pdf("TMMUQ0.miRNA.753.pdf",width=10,height=10)
+ggplot(TU1, aes(value)) + geom_density(aes(group = variable))
 dev.off()
-pdf("UQTMM.miRNA.753.pdf",width=10,height=10)
-ggplot(na.omit(UTl2), aes(value)) + geom_density(aes(group = variable))
+
+pdf("UQTMM0.miRNA.753.pdf",width=10,height=10)
+ggplot(UT1, aes(value)) + geom_density(aes(group = variable))
 dev.off()
-final regresar NA a ceros!!!!!
