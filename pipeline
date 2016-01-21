@@ -1,0 +1,36 @@
+
+
+1. expression matrix mature miRNA (miRBase_mysql.txt):
+> dim(x)
+[1] 2588  752
+2. formating matrix (format_miR_matrix.R):
+matrix format: rownames: GENE/miR ID, colnames: patient code: XXXX.01(case)/11(control)
+> miRNAs_752_maduros.txt
+3. filter raw counts: filter targets with a minimum of  5  counts  in  at  least  25%  of  the  samples(752)
+low_counts_filter_miRNA.R
+ > dim(miRNA)
+ [1] 715 752
+miRNAs_752_maduros_filtro.txt
+4. density plot
+> density_plot.miR_RNAseq.R
+5. Normalization
+miRNA_normalization.R
+"Adjusting  the data by cpm or total count scaling introduces more variability to
+the  data,  whereas  all  other  methods  resulted  in  more  similar
+distribution  across  all  samples."
+" The distributions are more similar and centered
+at zero when the data are normalized using UQ, TMM, DESeq,
+cyclic loess and quantile normalizations"
+"UQ  and  TMM  decreased  the  variance  across  all miRNAs compared with the raw data"
+R statistical environment (v3.1.2)
+Bioconductor  (3.0)
+Cyclic loess and quantile normalization were performed using  the normalizeBetweenArrays() function  in  the  limma package (v3.22.4)
+TMM and UQ normalizations were performed using calcNormFactors() in the edgeR (v3.8.5) package
+the  function estimateSizeFactors() in  the  DESeq (v1.18.0) package was used to normalize the count data using size
+factors 
+(http://bib.oxfordjournals.org/content/early/2015/04/17/bib.bbv019.full.pdf+html)
+> miRNA_752_normTMM.txt
+> TMM1.miRNA.753.pdf
+> raw.miRNA.753.pdf
+# for contrast matrix
+6. bzip2 *
