@@ -40,6 +40,25 @@ colnames(x) <- names
 # select rownames as colnames and orders them alphabetically
 x <- x[sort(rownames(x)), sort(colnames(x)) ]
 
+#### only for miRNA matrix or non squared matrix:
+# must be equal to number of genes
+
+length(setdiff(rownames(x), colnames(x)))
+
+genes <- setdiff(rownames(x), colnames(x))
+y <- t(x[genes,])
+y2 <- mat.or.vec(length(colnames(y)), length(colnames(y)))
+rownames(y2) <- colnames(y)
+y <- rbind(y, y2)
+x <- x[sort(rownames(x)),]
+y <- y[sort(rownames(y)),]
+identical(rownames(x), rownames(y))
+x <-cbind(x,y)
+####
+
+# select rownames as colnames and orders them alphabetically
+x <- x[sort(rownames(x)), sort(colnames(x)) ]
+
 # control: class must be 'matrix'
 # matrix must be symmetric
 class(x)
@@ -96,6 +115,7 @@ x <- x[sort(rownames(x)), sort(colnames(x)) ]
 
 #### only for miRNA matrix or non squared matrix:
 # must be equal to number of genes
+
 length(setdiff(rownames(x), colnames(x)))
 
 genes <- setdiff(rownames(x), colnames(x))

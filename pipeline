@@ -6,7 +6,7 @@
 2. formating matrix (format_miR_matrix.R):
 matrix format: rownames: GENE/miR ID, colnames: patient code: XXXX.01(case)/11(control)
 > miRNAs_752_maduros.txt
-3. filter raw counts: filter targets with a minimum of  5  counts  in  at  least  25%  of  the  samples(752)
+3. filter raw counts: filter targets with a minimum of  5  counts  in  at  least  25%  of  the  samples(752) = 188
 low_counts_filter_miRNA.R
  > dim(miRNA)
  [1] 715 752
@@ -32,5 +32,64 @@ factors
 > miRNA_752_normTMM.txt
 > TMM1.miRNA.753.pdf
 > raw.miRNA.753.pdf
-# for contrast matrix
-6. bzip2 *
+6. add RNAseq expression data to miRNAseq for mi miRNA-miRNA miRNA-mRNA interactions
+expression_matrix_miRNAs.R
+7. add RNAseq network mRNA-mRNA interaction for whole network
+> red.RNAseq.final.752.txt = 99.987% dpi 0.1 11202 interactions (with no header to cat under miRNA network)
+> red.MIRseq.final.752.txt = 99.980% dpi 0.1 
+>>> red.final.752.txt
+
+for 86 samples matrices
+enfermos <- read.table("miRNAs_enfermos_maduros.txt", sep="\t", header=T, row.names=1)
+sanos <- read.table("miRNAs_sanos_maduros.txt", sep="\t", header=T, row.names=1)
+1. expression matrix mature miRNA (miRBase_mysql.txt):
+> dim(enfermos)
+[1] 2588  752
+> dim(sanos)
+[1] 2588  752
+2. formating matrix (format_miR_matrix.R):
+matrix format: rownames: GENE/miR ID, colnames: patient code: XXXX.01(case)/11(control)
+> miRNAs_enfermos_maduros.txt
+> miRNAs_sanos_maduros.txt
+3. filter raw counts: filter targets with a minimum of  5  counts  in  at  least  25%  of  the  samples(86) = 22
+low_counts_filter_miRNA.R
+> dim(enfermos)                                                                                                                       
+[1] 690  86
+> dim(sanos)
+[1] 658  86
+> miRNAs_enfermos_maduros_filtro.txt
+> miRNAs_sanos_maduros_filtro.txt
+set two groups to smaller gene number(658)
+miRNAs_752_maduros_filtro.txt
+4. density plot
+> density_plot.miR_RNAseq.R
+5. Normalization
+miRNA_normalization.R
+"Adjusting  the data by cpm or total count scaling introduces more variability to
+the  data,  whereas  all  other  methods  resulted  in  more  similar
+distribution  across  all  samples."
+" The distributions are more similar and centered
+at zero when the data are normalized using UQ, TMM, DESeq,
+cyclic loess and quantile normalizations"
+"UQ  and  TMM  decreased  the  variance  across  all miRNAs compared with the raw data"
+R statistical environment (v3.1.2)
+Bioconductor  (3.0)
+Cyclic loess and quantile normalization were performed using  the normalizeBetweenArrays() function  in  the  limma package (v3.22.4)
+TMM and UQ normalizations were performed using calcNormFactors() in the edgeR (v3.8.5) package
+the  function estimateSizeFactors() in  the  DESeq (v1.18.0) package was used to normalize the count data using size
+factors 
+(http://bib.oxfordjournals.org/content/early/2015/04/17/bib.bbv019.full.pdf+html)
+> miRNAs_86_maduros_norm.txt
+> miRNAs_86_maduros_norm_enfermos.txt
+> miRNAs_86_maduros_norm_sanos.txt
+> TMM.miRNA.86.pdf
+> raw.miRNA.86.pdf
+6. add RNAseq expression data to miRNAseq
+expression_matrix_miRNAs.R
+7. add RNAseq network mRNA-mRNA interaction for whole network
+> enfermos.99.987.dpi.0.1.sif.txt -> red.enfermos.RNAseq.86.txt = 99.987% dpi 0.1 14280 interactions (with no header to cat under miRNA network)
+> sanos.99.987.dpi.0.1.sif.txt > red.sanos.RNAseq.86.txt = 99.987% dpi 0.1 14890 interactions
+> sanos.mir.99.980.dpi.sif.txt > red.sanos.MIR.86.txt = 99.980% dpi 0.1 24401 interactions
+cat red.sanos.MIR.86.txt red.sanos.RNAseq.86.txt > red.final.sanos.txt
+> enfermos.mir.99.980.dpi.sif.txt > red.enfermos.MIR.86.txt = 99.980% dpi 0.1 23582 interactions
+cat red.enfermos.MIR.86.txt red.enfermos.RNAseq.86.txt > red.final.enfermos.txt

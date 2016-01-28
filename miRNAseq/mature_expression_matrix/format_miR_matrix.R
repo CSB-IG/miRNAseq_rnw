@@ -8,7 +8,7 @@ names <- colnames(x)
 names1 <- gsub('.{13}$', '', names)
 names2 <- substring(names1, 9)
 colnames(x) <- names2
-x$A245.01 <- NULL
+x$A245.01 <- NULL # only for 753 samples
 
 # save final expression matrix
 write.table(x, quote = F, sep = "\t", row.names = T, col.names = NA, file = "miRNAs_752_maduros.txt")

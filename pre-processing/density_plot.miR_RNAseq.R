@@ -38,6 +38,15 @@ densityplot <- function(g){
   l2
 }
 
+densityplot2 <- function(g){
+  M1 <- log2(g+1)
+  M2 <- cbind(rownames(M1), M1)
+  rownames(M2) <- NULL
+  colnames(M2)[1] <- "ID"
+  l2 = melt(M2)
+  l2
+}
+
 # x1 <- densityplot(x)
 
 # single plot
