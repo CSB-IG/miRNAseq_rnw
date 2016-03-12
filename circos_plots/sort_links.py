@@ -7,7 +7,7 @@ parser = argparse.ArgumentParser(description='Create a links file for circos plo
 parser.add_argument('edgelist', type=argparse.FileType('r'), help="path to edgelist" )
 args = parser.parse_args()
 
-reader = csv.reader(args.edgelist, delimiter=";")
+reader = csv.reader(args.edgelist, delimiter="\t")
 
 reader.next()
 for l in reader:
