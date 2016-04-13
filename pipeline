@@ -37,6 +37,7 @@ expression_matrix_miRNAs.R
 7. add RNAseq network mRNA-mRNA interaction for whole network
 > red.RNAseq.final.752.txt = 99.987% dpi 0.1 11202 interactions (with no header to cat under miRNA network)
 > red.MIRseq.final.752.txt = 99.980% dpi 0.1 
+cat red.MIRseq.final.752.txt red.RNAseq.final.752.txt > red.final.752.txt
 >>> red.final.752.txt
 
 for 86 samples matrices
@@ -59,7 +60,7 @@ low_counts_filter_miRNA.R
 [1] 658  86
 > miRNAs_enfermos_maduros_filtro.txt
 > miRNAs_sanos_maduros_filtro.txt
-set two groups to smaller gene number(658)
+set two groups to intersection (633)
 miRNAs_752_maduros_filtro.txt
 4. density plot
 > density_plot.miR_RNAseq.R
@@ -93,3 +94,26 @@ expression_matrix_miRNAs.R
 cat red.sanos.MIR.86.txt red.sanos.RNAseq.86.txt > red.final.sanos.txt
 > enfermos.mir.99.980.dpi.sif.txt > red.enfermos.MIR.86.txt = 99.980% dpi 0.1 23582 interactions
 cat red.enfermos.MIR.86.txt red.enfermos.RNAseq.86.txt > red.final.enfermos.txt
+
+probes
+* miR752 -> probes_miRNA.txt
+yes 0 | head -n 715 > 1.txt
+paste probes_miRNA.txt 1.txt > clave_MIR_752.txt
+* RNAseq752 -> probes_RNAseq_752
+yes 1 | head -n 15972 > 1.txt
+paste probes_RNAseq_752 1.txt > clave_RNA_752.txt
+* miR86 -> probes_86.txt
+yes 0 | head -n 633 > 1.txt
+paste probes_86.txt 1.txt > clave_MIR_86.txt
+*RNAseq86 -> probes_RNAseq_86
+yes 1 | head -n 15136 > 1.txt
+paste probes_RNAseq_86 1.txt > clave_RNA_86.txt
+
+cat clave_MIR_86.txt RNAseq_86_genes.txt RNAseq_86_TF.txt > clave.final.86.txt
+cat clave_MIR_752.txt RNAseq_752_genes.txt RNAseq_752_TF.txt > clave.final.752.txt
+
+enfermos <- read.table(file = "enfermos.86.adj.txt", header = T, sep = '\t')
+p <- enfermos
+p[p < 0.16482207] <- 0
+sum(enfermos != 0)/2
+sum(p != 0)/2
