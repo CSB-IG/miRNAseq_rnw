@@ -1,0 +1,95 @@
+
+# 0) source ~/enviromets/csbig/bin/activate
+# 1) modificar expfile, probes, run_id, y outdir (pip install sh <- mensaje de error)
+ awk '{print $1}' <file> | less -S
+
+python /home/hachepunto/breast_cancer_networks/parallel_aracne/genera_condor.py \
+    --aracne_tgz /home/hachepunto/ARACNE/ARACNE.src.tar.gz \
+    --expfile_bz2 /home/hachepunto/rauldb/subclasificacion/her2_exp_matrix.txt.bz2 \
+    --probes /home/hachepunto/rauldb/vaquerizas_plus2.txt \
+    --run_id her2_1 \
+    --outdir /home/hachepunto/rauldb/subclasificacion/her2_1 \
+    --p 1
+# 2)  Poner en el encabezado de .condor abajo de log
+# requirements = Machine != "visnu.inmegen.gob.mx"
+
+# 3) Dentro del outdir darle en linea de comandos:
+# condor_submit RNAseq_86.enfermos.rsem.condor
+
+# 4) al terminar: find $outdir -empty -iname '*.adj'
+
+python /home/diana/parallel-aracne/genera_condor.py \
+    --aracne_tgz /home/diana/ARACNE/ARACNE.src.tar.gz \
+    --expfile_bz2 /home/diana/TCGA_miRNA_BC/miRNAs_resultados/miRNA_752_normTMM_ID.txt.bz2 \
+    --probes /home/diana/TCGA_miRNA_BC/miRNAs_resultados/probes_miRNA.txt \
+    --run_id miRNA_752_ID \
+    --outdir /home/diana/TCGA_miRNA_BC/miRNAs_resultados/miRNA_752_ID \
+    --p 1
+
+# sin nombre
+
+
+
+python /home/diana/parallel-aracne/genera_condor.py \
+    --aracne_tgz /home/diana/ARACNE/ARACNE.src.tar.gz \
+    --expfile_bz2 /home/diana/TCGA_miRNA_BC/miRNAs_resultados/miRNA_752_normTMM.txt.bz2 \
+    --probes /home/diana/TCGA_miRNA_BC/miRNAs_resultados/probes_miRNA.txt \
+    --run_id miRNA_752 \
+    --outdir /home/diana/TCGA_miRNA_BC/miRNAs_resultados/miRNA_752 \
+    --p 1
+
+
+ 
+# final
+
+python /home/diana/parallel-aracne/genera_condor.py \
+    --aracne_tgz /home/diana/ARACNE/ARACNE.src.tar.gz \
+    --expfile_bz2 /home/diana/TCGA_miRNA_BC/miRNAs_resultados/matriz_completa.txt.bz2 \
+    --probes /home/diana/TCGA_miRNA_BC/miRNAs_resultados/probes_miRNA.txt \
+    --run_id miRNA_752_completo \
+    --outdir /home/diana/TCGA_miRNA_BC/miRNAs_resultados/miRNA_752_completo \
+    --p 1
+
+# faltantes
+
+python /home/diana/parallel-aracne/genera_condor.py \
+    --aracne_tgz /home/diana/ARACNE/ARACNE.src.tar.gz \
+    --expfile_bz2 /home/diana/TCGA_miRNA_BC/miRNAs_resultados/matriz_completa.txt.bz2 \
+    --probes /home/diana/TCGA_miRNA_BC/miRNAs_resultados/probes_miRNA_2.txt \
+    --run_id miRNA_752_completo_faltantes \
+    --outdir /home/diana/TCGA_miRNA_BC/miRNAs_resultados/miRNA_752_completo_faltantes \
+    --p 1
+
+
+# enfermos
+
+python /home/diana/parallel-aracne/genera_condor.py \
+    --aracne_tgz /home/diana/ARACNE/ARACNE.src.tar.gz \
+    --expfile_bz2 /home/diana/TCGA_miRNA_BC/miRNAs_resultados/matriz_completa_enfermos.txt.bz2 \
+    --probes /home/diana/TCGA_miRNA_BC/miRNAs_resultados/probes_86.txt \
+    --run_id miRNA_86_enfermos \
+    --outdir /home/diana/TCGA_miRNA_BC/miRNAs_resultados/miRNA_86_enfermos \
+    --p 1
+
+# sanos
+
+python /home/diana/parallel-aracne/genera_condor.py \
+    --aracne_tgz /home/diana/ARACNE/ARACNE.src.tar.gz \
+    --expfile_bz2 /home/diana/TCGA_miRNA_BC/miRNAs_resultados/matriz_completa_sanos.txt.bz2 \
+    --probes /home/diana/TCGA_miRNA_BC/miRNAs_resultados/probes_86.txt \
+    --run_id miRNA_86_sanos \
+    --outdir /home/diana/TCGA_miRNA_BC/miRNAs_resultados/miRNA_86_sanos \
+    --p 1
+
+
+# sanos_ faltantes
+
+python /home/diana/parallel-aracne/genera_condor.py \
+    --aracne_tgz /home/diana/ARACNE/ARACNE.src.tar.gz \
+    --expfile_bz2 /home/diana/TCGA_miRNA_BC/miRNAs_resultados/matriz_completa_sanos.txt.bz2  \
+    --probes /home/diana/TCGA_miRNA_BC/miRNAs_resultados/probes_sanos_faltantes.txt \
+    --run_id miRNA_86_sanos_faltantes \
+    --outdir /home/diana/TCGA_miRNA_BC/miRNAs_resultados/miRNA_86_sanos_faltantes \
+    --p 1
+
+
