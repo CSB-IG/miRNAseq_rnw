@@ -32,12 +32,16 @@ gconvert <- gconvert[sort.list(gconvert[,1]),]
 genesymbol <- gconvert[,4]
 genesymbol <- ifelse(genesymbol == "N/A", as.vector(rownames(eset)), as.vector(genesymbol))
 
-TF <- read.table(file= "annotation/TF.txt", )
+TF <- read.table(file= "../annotation/TF_vaquerizas.txt", )
 TF <- as.character(TF[[1]])
 
 length(TF)
-TFinGS <- which(genesymbol %in% TF)
-TFs_in_eset <- rownames(eset)[TFinGS]
-write.table(TFs_in_eset, file = "TFs_list.txt", quote = FALSE, row.names = FALSE, col.names = FALSE)
 
-grep("hsa-", genesymbol)
+TFinGS <- which(genesymbol %in% TF)
+mirnas <- grep("hsa-", genesymbol)
+
+regulators <- rownames(eset)[c(mirnas, TFinGS)]
+
+head(regulators)
+
+write.table(regulators, file = "regulators.txt", quote = FALSE, row.names = FALSE, col.names = FALSE)
