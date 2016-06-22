@@ -5,7 +5,7 @@ create local server database (for miRBase version 21):
 wget -rnp wget ftp://mirbase.org/pub/mirbase/21/database_files/
 
 # save files in current directory:
-wget -np wget ftp://mirbase.org/pub/mirbase/21/database_files/*
+wget -np  wget ftp://mirbase.org/pub/mirbase/21/database_files/*
 
 gunzip *gz
 
