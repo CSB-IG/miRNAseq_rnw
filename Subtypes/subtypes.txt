@@ -1,0 +1,86 @@
+# expression matrix for 752 breast caner patients from TCGA
+# RNAseq_752_norm.rsem.aracne.txt
+
+library(genefu)
+
+# genefu input: normalized expression matrix with geneID as columns & samples as rows
+#               annotation table: at least one col = probe (GeneID) & EntrezGene.ID (EntezID)
+
+genes <- read.table("RNAseq_752_norm.rsem.aracne.txt", header=T, sep="\t", row.names=1)
+dataset <- log2(genes+1)
+dataset <- as.data.frame(t(dataset))
+dannot <- read.table("/mnt/e/diana/TCGA_miRNA_BC/miRNAs_resultados/annotation/annot.txt", header=F, sep="\t", row.names=1)
+colnames(dannot)<-c("probe", "EntrezGene.ID")
+
+# pam50.scale
+# pam50.robust
+# PAM50Preds<-intrinsic.cluster.predict(sbt.model=pam50, data=dataset, annot=dannot, do.mapping=TRUE, verbose=TRUE)
+# table(PAM50Preds$subtype)
+
+PAM50Preds<-intrinsic.cluster.predict(sbt.model=pam50.robust, data=dataset, annot=dannot, do.mapping=TRUE, verbose=TRUE, do.prediction.strength=TRUE)
+table(PAM50Preds$subtype)
+
+PAM50Preds<-intrinsic.cluster.predict(sbt.model=pam50.robust, data=dataset, annot=dannot, do.mapping=TRUE, verbose=TRUE)
+50/50 probes are used for clustering
+robust standardization of the gene expressions
+
+table(PAM50Preds$subtype)
+
+ Basal   Her2   LumA   LumB Normal 
+   137     82    291    215     27
+
+LumA <- names(PAM50Preds$subtype)[which(PAM50Preds$subtype == "LumA")]
+LumB <- names(PAM50Preds$subtype)[which(PAM50Preds$subtype == "LumB")]
+Basal <- names(PAM50Preds$subtype)[which(PAM50Preds$subtype == "Basal")]
+Her2 <- names(PAM50Preds$subtype)[which(PAM50Preds$subtype == "Her2")]
+Normal_like <- names(PAM50Preds$subtype)[which(PAM50Preds$subtype == "Normal")]
+
+write.table(sort(PAM50Preds$subtype), quote = F, sep = "\t", row.names = T, file = "Subtipos_pam50robust.scale_752_RNAseq.txt")
+write.table(genes[,Basal], quote = F, sep = "\t", row.names = T, col.names=NA, file = "Subtipo_Basal_Expmtx_Aracne_RNAseq.txt")
+write.table(genes[,Her2], quote = F, sep = "\t", row.names = T, col.names=NA, file = "Subtipo_Her2_Expmtx_Aracne_RNAseq.txt")
+write.table(genes[,LumA], quote = F, sep = "\t", row.names = T, col.names=NA, file = "Subtipo_LumA_Expmtx_Aracne_RNAseq.txt")
+write.table(genes[,LumB], quote = F, sep = "\t", row.names = T, col.names=NA, file = "Subtipo_LumB_Expmtx_Aracne_RNAseq.txt")
+
+miRNAs <- read.table("miRNA_752_normTMM.txt", sep="\t", header=T, row.names=1)
+identical(colnames(genes), colnames(miRNAs))
+[1] TRUE
+
+red <- rbind(miRNAs, genes)
+dim(red)
+
+write.table(red[,Basal], quote = F, sep = "\t", row.names = T, col.names=NA, file = "Subtipo_Basal_Expmtx_Aracne.txt")
+write.table(red[,Her2], quote = F, sep = "\t", row.names = T, col.names=NA, file = "Subtipo_Her2_Expmtx_Aracne.txt") 
+write.table(red[,LumA], quote = F, sep = "\t", row.names = T, col.names=NA, file = "Subtipo_LumA_Expmtx_Aracne.txt") 
+write.table(red[,LumB], quote = F, sep = "\t", row.names = T, col.names=NA, file = "Subtipo_LumB_Expmtx_Aracne.txt")
+
+# https://www.biostars.org/p/102212/
+# First, make sure you have an annotation dataset. They can be found in bioconductor (i.e. annot.nkis, org.Hs.egALIAS2EG). 
+# Then make sure that, if not already, this annotation dataset has the column name "EntrezGene.ID" 
+# plus whatever other columns in the dataset present such as gene_name. 
+# Now, if you are doing predictions (such as for PAM50), make sure you are using intrinsic.cluster.predict() 
+# and not intrinsic.cluster(). At the end you should have your 3 objects for your predictions: 
+# the pam50 model found in genefu (data(pam50)), your matrix that SHOULD HAVE SAMPLES IN ROWS AND GENES IN COLUMNS 
+# (this seems to be the most confusing part) and lastly the annotation data.frame with a column name "EntrezGene.ID."
+
+# Strength Prediction (https://www.stat.washington.edu/wxs/Stat592-w2011/Literature/tibshirani-walther-prediction-strength-2005.pdf)
+
+# table(PAM50Preds$prediction.strength$ps.individual[Her2])
+
+                 0 0.037037037037037 0.0987654320987654 0.82716049382716
+                 1                  4                  9                 68 
+# table(PAM50Preds$prediction.strength$ps.individual[Basal])                                                                                            
+
+                  0 0.00735294117647059   0.977941176470588 
+                  1                   2                 134 
+# table(PAM50Preds$prediction.strength$ps.individual[LumA])                                                                                             
+
+                0 0.241379310344828 0.751724137931034 
+                1                71               219 
+# table(PAM50Preds$prediction.strength$ps.individual[LumB])
+
+                 0 0.0467289719626168 0.0560747663551402  0.878504672897196 
+                 2                 11                 13                189 
+# table(PAM50Preds$prediction.strength$ps.individual[Normal_like])
+
+0.0384615384615385  0.923076923076923 
+                 2                 25 
