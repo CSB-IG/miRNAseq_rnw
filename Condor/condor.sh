@@ -73,3 +73,20 @@ python /home/diana/parallel-aracne/genera_condor.py \
     --run_id miRNAseq_752_casos_red_LumB \
     --outdir /mnt/e/diana/TCGA_miRNA_BC/miRNAs_resultados/miRNAseq_752_casos_red_LumB \
     --p 1
+
+Her2
+python /home/diana/rnw/parallel_aracne/genera_condor.py \
+    --path_to_aracne2 /home/diana/ARACNE/aracne2 \
+    --expfile /mnt/e/diana/TCGA_miRNA_BC/miRNAs_resultados/Subtipo_Her2_Expmtx_Aracne_RNAseq.txt \
+    --probes /mnt/e/diana/TCGA_miRNA_BC/miRNAs_resultados/probes_RNAseq_752 \
+    --run_id RNAseq_752_casos_red_Her2 \
+    --outdir /mnt/e/diana/TCGA_miRNA_BC/miRNAs_resultados/RNAseq_752_casos_red_Her2 \
+    --p 1
+    
+python /home/diana/parallel-aracne/genera_condor.py \
+    --path_to_aracne2 /home/diana/ARACNE/aracne2 \
+    --expfile /mnt/e/diana/TCGA_miRNA_BC/miRNAs_resultados/Subtipo_Her2_Expmtx_Aracne.txt \
+    --probes /mnt/e/diana/TCGA_miRNA_BC/miRNAs_resultados/probes_miRNAs_752.txt \
+    --run_id miRNAseq_752_casos_red_Her2 \
+    --outdir /mnt/e/diana/TCGA_miRNA_BC/miRNAs_resultados/miRNAseq_752_casos_red_Her2 \
+    --p 1
