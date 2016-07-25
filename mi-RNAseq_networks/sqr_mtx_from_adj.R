@@ -65,7 +65,7 @@ class(x)
 isSymmetric(x)
 
 # save squared matrix
-write.table(x, file = "x.adj.txt", sep = "\t", col.names= T, row.names= T, quote = F )
+write.table(x, file = "x.adj.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
 
 # convert to edgelist: node-node-interaction (weighted=T) and save
 xg <- graph.adjacency(adjmatrix= x, mode='undirected', diag=F, weighted=T)
@@ -76,7 +76,7 @@ write.table(xsif, file = "x.sif.txt", sep = "\t", col.names= T, row.names= F, qu
 xdpi <- aracne(mim =  x, eps = 0.1)
 
 #save dpi squared matrix
-write.table(xdpi, file = "xdpi.adj.txt", sep = "\t", col.names= T, row.names= T, quote = F )
+write.table(xdpi, file = "xdpi.adj.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
 
 #convert dpi to: edgelist node-node-interaction (weighted=T) and save
 xgdpi <- graph.adjacency(adjmatrix= xdpi, mode='undirected', diag=F, weighted=T)
@@ -132,14 +132,14 @@ x <-cbind(x,y)
 x <- x[sort(rownames(x)), sort(colnames(x)) ]
 class(x)
 isSymmetric(x)
-write.table(x, file = "x.adj.txt", sep = "\t", col.names= T, row.names= T, quote = F )
+write.table(x, file = "x.adj.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
 
 xg <- graph.adjacency(adjmatrix= x, mode='undirected', diag=F, weighted=T)
 xsif <- get.data.frame(xg)
 write.table(xsif, file = "x.sif.txt", sep = "\t", col.names= T, row.names= F, quote = F )
 
 xdpi <- aracne(mim =  x, eps = 0.1)
-write.table(xdpi, file = "xdpi.adj.txt", sep = "\t", col.names= T, row.names= F, quote = F )
+write.table(xdpi, file = "xdpi.adj.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
 
 xgdpi <- graph.adjacency(adjmatrix= xdpi, mode='undirected', diag=F, weighted=T)
 xdpisif <- get.data.frame(xgdpi)
