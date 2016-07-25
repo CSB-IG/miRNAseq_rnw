@@ -117,3 +117,12 @@ p <- enfermos
 p[p < 0.16482207] <- 0
 sum(enfermos != 0)/2
 sum(p != 0)/2
+
+"matriz_completa_enfermos.txt" <- matriz de expresión de miRNAs y RNAseq normalizados
+"matriz_completa_sanos.txt" <- matriz de expresión de miRNAs y RNAseq normalizados
+"enfermos.86.txt" <- matriz de expresión final de RNAseq
+"sanos.86.txt" <- matriz de expresión final de RNAseq
+"enfermos_RNAseq.adj.txt" <- adj matrix de genes en común sanos y enfermos
+"enfermos_RNAseq.adj.txt" <- adj matrix de genes en común sanos y enfermos
+
+"RNAseq_86_enfermos_mi.txt
