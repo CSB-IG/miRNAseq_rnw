@@ -1,0 +1,76 @@
+# expression matrix for 86 breast caner patients from TCGA
+# RNAseq_752_norm.rsem.aracne.txt
+
+library(genefu)
+
+# genefu input: normalized expression matrix with geneID as columns & samples as rows
+#               annotation table: at least one col = probe (GeneID) & EntrezGene.ID (EntezID)
+
+genesenfermos <- read.table("enfermos.86.txt", header=T, sep="\t", row.names=1)
+datasetenfermos <- log2(genesenfermos+1)
+datasetenfermos <- as.data.frame(t(datasetenfermos))
+
+dannot <- read.table("/mnt/e/diana/TCGA_miRNA_BC/miRNAs_resultados/annotation/annot.txt", header=F, sep="\t", row.names=1)
+colnames(dannot)<-c("probe", "EntrezGene.ID")
+
+# pam50.scale
+# pam50.robust
+# PAM50Preds<-intrinsic.cluster.predict(sbt.model=pam50, data=dataset, annot=dannot, do.mapping=TRUE, verbose=TRUE)
+# table(PAM50Preds$subtype)
+
+PAM50Preds1<-intrinsic.cluster.predict(sbt.model=pam50.robust, data=datasetenfermos, annot=dannot, do.mapping=TRUE, verbose=TRUE, do.prediction.strength=TRUE)
+table(PAM50Preds1$subtype)
+
+> PAM50Preds1<-intrinsic.cluster.predict(sbt.model=pam50.robust, data=datasetenfermos, annot=dannot, do.mapping=TRUE, verbose=TRUE, do.prediction.strength=TRUE)
+50/50 probes are used for clustering
+robust standardization of the gene expressions
+> table(PAM50Preds1$subtype)
+
+ Basal   Her2   LumA   LumB Normal 
+    13     10     31     29      3
+
+LumA <- names(PAM50Preds1$subtype)[which(PAM50Preds1$subtype == "LumA")]
+LumB <- names(PAM50Preds1$subtype)[which(PAM50Preds1$subtype == "LumB")]
+Basal <- names(PAM50Preds1$subtype)[which(PAM50Preds1$subtype == "Basal")]
+Her2 <- names(PAM50Preds1$subtype)[which(PAM50Preds1$subtype == "Her2")]
+Normal_like <- names(PAM50Preds1$subtype)[which(PAM50Preds1$subtype == "Normal")]
+
+write.table(sort(PAM50Preds1$subtype), quote = F, sep = "\t", row.names = T, file = "Subtipos_pam50robust.scale_86_RNAseq.txt")
+write.table(Basal, quote = F, sep = "\t", row.names = F, col.names=F, file = "Subtipo_Basal_86_RNAseq.txt")
+write.table(Her2, quote = F, sep = "\t", row.names = F, col.names=F, file = "Subtipo_Her2_86_RNAseq.txt")
+write.table(LumA, quote = F, sep = "\t", row.names = F, col.names=F, file = "Subtipo_LumA_86_RNAseq.txt")
+write.table(LumB, quote = F, sep = "\t", row.names = F, col.names=F, file = "Subtipo_LumB_86_RNAseq.txt")
+
+
+# https://www.biostars.org/p/102212/
+# First, make sure you have an annotation dataset. They can be found in bioconductor (i.e. annot.nkis, org.Hs.egALIAS2EG). 
+# Then make sure that, if not already, this annotation dataset has the column name "EntrezGene.ID" 
+# plus whatever other columns in the dataset present such as gene_name. 
+# Now, if you are doing predictions (such as for PAM50), make sure you are using intrinsic.cluster.predict() 
+# and not intrinsic.cluster(). At the end you should have your 3 objects for your predictions: 
+# the pam50 model found in genefu (data(pam50)), your matrix that SHOULD HAVE SAMPLES IN ROWS AND GENES IN COLUMNS 
+# (this seems to be the most confusing part) and lastly the annotation data.frame with a column name "EntrezGene.ID."
+
+# Strength Prediction (https://www.stat.washington.edu/wxs/Stat592-w2011/Literature/tibshirani-walther-prediction-strength-2005.pdf)
+
+> table(PAM50Preds1$prediction.strength$ps.individual[Her2])
+
+0.111111111111111 0.222222222222222 0.444444444444444 
+                2                 3                 5 
+> table(PAM50Preds1$prediction.strength$ps.individual[Basal])                                                                                            
+
+                0 0.916666666666667 
+                1                12 
+> table(PAM50Preds1$prediction.strength$ps.individual[LumA])                                                                                             
+
+ 1 
+31 
+> table(PAM50Preds1$prediction.strength$ps.individual[LumB])
+
+                0 0.928571428571428 
+                2                27 
+> table(PAM50Preds1$prediction.strength$ps.individual[Normal_like])
+
+0 
+3 
+
