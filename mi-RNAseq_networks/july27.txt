@@ -130,7 +130,7 @@ write.table(mirmir_dpi1, file = "sanos_mir_mir_dpi_adjmtx.txt", sep = "\t", col.
 adjs_genes2 <- list.files(path="~/TCGA_miRNA_BC/datos_nivel3_norm_TCGA/RNAseq_86.enfermos.rsem/", pattern="*_1.adj")
 length(adjs_genes2)
 
-adjs_genes1 <- list.files(pattern="*_1.adj")
+adjs_genes1 <- list.files(path="~/TCGA_miRNA_BC/datos_nivel3_norm_TCGA/RNAseq_86.sanos.rsem/", pattern="*_1.adj")
 length(adjs_genes1)
 
 length(intersect(adjs_genes2), length(adjs_genes1))
