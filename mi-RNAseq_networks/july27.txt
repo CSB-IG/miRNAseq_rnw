@@ -149,24 +149,15 @@ class(x_genes2) <- "numeric"
 
 names_genes2 <- gsub('.{6}$','', adjs_genes2)
 colnames(x_genes2) <- names_genes2
-
+x_genes2 <- x_genes2[names_genes2, ]
 x_genes2 <- x_genes2[sort(rownames(x_genes2)), sort(colnames(x_genes2)) ]
 class(x_genes2)
 isSymmetric(x_genes2)
 
 setwd("~/TCGA_miRNA_BC/miRNAs_resultados/graficas")
-
 write.table(x_genes2, file = "enfermos_gene_p1_full_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
 
-genes_dpi2 <- aracne(mim =  x_genes2, eps = 0.1)
-write.table(genes_dpi2, file = "enfermos_gene_dpi_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
-
-
-adjs_genes1 <- list.files(pattern="*_1.adj")
-length(adjs_genes1)
-
 setwd("~/TCGA_miRNA_BC/datos_nivel3_norm_TCGA/RNAseq_86.sanos.rsem/")
-
 M_genes1 <- lapply(adjs_genes1, adjtosqmtx)
 x_genes1 <- t(rbind.fill.matrix(M_genes1))
 x_genes1[is.na(x_genes1)] <- 0
@@ -174,15 +165,16 @@ class(x_genes1) <- "numeric"
 
 names_genes1 <- gsub('.{6}$','', adjs_genes1)
 colnames(x_genes1) <- names_genes1
-
+x_genes1 <- x_genes1[names_genes1, ]
 x_genes1 <- x_genes1[sort(rownames(x_genes1)), sort(colnames(x_genes1)) ]
 class(x_genes1)
 isSymmetric(x_genes1)
 
 setwd("~/TCGA_miRNA_BC/miRNAs_resultados/graficas")
-
 write.table(x_genes1, file = "sanos_gene_p1_full_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
 
+genes_dpi2 <- aracne(mim =  x_genes2, eps = 0.1)
+write.table(genes_dpi2, file = "enfermos_gene_dpi_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
 genes_dpi1 <- aracne(mim =  x_genes1, eps = 0.1)
 write.table(genes_dpi1, file = "sanos_gene_dpi_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
 
