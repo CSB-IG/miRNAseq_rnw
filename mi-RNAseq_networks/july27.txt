@@ -133,11 +133,11 @@ length(adjs_genes2)
 adjs_genes1 <- list.files(path="~/TCGA_miRNA_BC/datos_nivel3_norm_TCGA/RNAseq_86.sanos.rsem/", pattern="*_1.adj")
 length(adjs_genes1)
 
-length(intersect(adjs_genes2), length(adjs_genes1))
+length(intersect(adjs_genes2, adjs_genes1))
 # 15136
 
-adjs_genes2 <- (intersect(adjs_genes2), length(adjs_genes1))
-adjs_genes1 <- (intersect(adjs_genes2), length(adjs_genes1))
+adjs_genes2 <- (intersect(adjs_genes2, adjs_genes1))
+adjs_genes1 <- (intersect(adjs_genes2, adjs_genes1))
 # revisar antes
 
 setwd("~/TCGA_miRNA_BC/datos_nivel3_norm_TCGA/RNAseq_86.enfermos.rsem/")
