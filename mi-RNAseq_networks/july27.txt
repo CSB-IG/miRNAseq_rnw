@@ -1,0 +1,199 @@
+
+# miRNA-interactions
+#~/TCGA_miRNA_BC/miRNAs_resultados/miRNA_86_enfermos/
+#~/TCGA_miRNA_BC/miRNAs_resultados/miRNA_86_sanos/
+
+# gene-interactions
+#~/TCGA_miRNA_BC/datos_nivel3_norm_TCGA/RNAseq_86.enfermos.rsem/
+#~/TCGA_miRNA_BC/datos_nivel3_norm_TCGA/RNAseq_86.sanos.rsem/
+
+# sanos = 1
+# enfermos = 2
+
+###########################################################################################################################
+### enfermos miRNAS
+###########################################################################################################################
+
+
+library(plyr)
+library(minet)
+library(igraph)
+
+adjs_mir2 <- list.files(path="~/TCGA_miRNA_BC/miRNAs_resultados/miRNA_86_enfermos/", pattern="*_1.adj")
+length(adjs_mir2)
+
+adjtosqmtx <- function(g){
+  a <- scan(file = g, skip = 17, what = "")
+  m <- matrix(unlist(a[-(1)]), ncol = 2, byrow = T)
+  rownames(m) <- c(m[,1])
+  m <- t(m[,2])
+  m
+}
+
+setwd("~/TCGA_miRNA_BC/miRNAs_resultados/miRNA_86_enfermos/")
+M_mir2 <- lapply(adjs_mir2, adjtosqmtx)
+x_mir2 <- t(rbind.fill.matrix(M_mir2))
+x_mir2[is.na(x_mir2)] <- 0
+class(x_mir2) <- "numeric"
+
+names_mir2 <- gsub('.{6}$','', adjs_mir2)
+colnames(x_mir2) <- names_mir2
+
+length(setdiff(rownames(x_mir2), colnames(x_mir2)))
+genes2 <- setdiff(rownames(x_mir2), colnames(x_mir2))
+mir2 <- intersect(rownames(x_mir2), colnames(x_mir2))
+mir_mir2 <- t(x_mir2[mir2,])
+mir_mir2 <- mir_mir2[sort(rownames(mir_mir2)), sort(colnames(mir_mir2)) ]
+class(mir_mir2)
+isSymmetric(mir_mir2)
+
+
+y2 <- t(x_mir2[genes2,])
+y22 <- mat.or.vec(length(colnames(y2)), length(colnames(y2)))
+rownames(y22) <- colnames(y2)
+y2 <- rbind(y2, y22)
+x_mir2 <- x_mir2[sort(rownames(x_mir2)),]
+y2 <- y2[sort(rownames(y2)),]
+identical(rownames(x_mir2), rownames(y2))
+x_mir2 <-cbind(x_mir2,y2)
+
+x_mir2 <- x_mir2[sort(rownames(x_mir2)), sort(colnames(x_mir2)) ]
+class(x_mir2)
+isSymmetric(x_mir2)
+x_mir2[mir2, mir2] <- 0
+isSymmetric(x_mir2)
+
+setwd("~/TCGA_miRNA_BC/miRNAs_resultados/graficas")
+write.table(mir_mir2, file = "enfermos_mir_mir_p1_full_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
+write.table(x_mir2, file = "enfermos_mir_gene_p1_full_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
+
+mir_dpi2 <- aracne(mim =  x_mir2, eps = 0.1)
+mirmir_dpi2 <- aracne(mim =  mir_mir2, eps = 0.1)
+write.table(mir_dpi2, file = "enfermos_mir_gene_dpi_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
+write.table(mirmir_dpi2, file = "enfermos_mir_mir_dpi_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
+
+###########################################################################################################################
+### sanos miRNAs
+###########################################################################################################################
+
+adjs_mir1 <- list.files(path="~/TCGA_miRNA_BC/miRNAs_resultados/miRNA_86_sanos/", pattern="*_1.adj")
+length(adjs_mir1)
+
+setwd("~/TCGA_miRNA_BC/miRNAs_resultados/miRNA_86_sanos/")
+
+M_mir1 <- lapply(adjs_mir1, adjtosqmtx)
+x_mir1 <- t(rbind.fill.matrix(M_mir1))
+x_mir1[is.na(x_mir1)] <- 0
+class(x_mir1) <- "numeric"
+
+names_mir1 <- gsub('.{6}$','', adjs_mir1)
+colnames(x_mir1) <- names_mir1
+
+length(setdiff(rownames(x_mir1), colnames(x_mir1)))
+genes1 <- setdiff(rownames(x_mir1), colnames(x_mir1))
+
+mir1 <- intersect(rownames(x_mir1), colnames(x_mir1))
+mir_mir1 <- t(x_mir1[mir1,])
+mir_mir1 <- mir_mir1[sort(rownames(mir_mir1)), sort(colnames(mir_mir1)) ]
+class(mir_mir1)
+isSymmetric(mir_mir1)
+
+y1 <- t(x_mir1[genes1,])
+y21 <- mat.or.vec(length(colnames(y1)), length(colnames(y1)))
+rownames(y21) <- colnames(y1)
+y1 <- rbind(y1, y21)
+x_mir1 <- x_mir1[sort(rownames(x_mir1)),]
+y1 <- y1[sort(rownames(y1)),]
+identical(rownames(x_mir1), rownames(y1))
+x_mir1 <-cbind(x_mir1,y1)
+
+x_mir1 <- x_mir1[sort(rownames(x_mir1)), sort(colnames(x_mir1)) ]
+class(x_mir1)
+isSymmetric(x_mir1)
+x_mir1[mir1, mir1] <- 0
+isSymmetric(x_mir1)
+
+setwd("~/TCGA_miRNA_BC/miRNAs_resultados/graficas")
+
+write.table(mir_mir1, file = "sanos_mir_mir_p1_full_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
+write.table(x_mir1, file = "sanos_mir_gene_p1_full_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
+
+mir_dpi1 <- aracne(mim =  x_mir1, eps = 0.1)
+mirmir_dpi1 <- aracne(mim =  mir_mir1, eps = 0.1)
+write.table(mir_dpi1, file = "sanos_mir_gene_dpi_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
+write.table(mirmir_dpi1, file = "sanos_mir_mir_dpi_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
+
+###########################################################################################################################
+### genes sanos y enfermos
+###########################################################################################################################
+
+adjs_genes2 <- list.files(path="~/TCGA_miRNA_BC/datos_nivel3_norm_TCGA/RNAseq_86.enfermos.rsem/", pattern="*_1.adj")
+length(adjs_genes2)
+
+adjs_genes1 <- list.files(path="~/TCGA_miRNA_BC/datos_nivel3_norm_TCGA/RNAseq_86.sanos.rsem/", pattern="*_1.adj")
+length(adjs_genes1)
+
+length(intersect(adjs_genes2, adjs_genes1))
+# 15136
+
+adjs_genes2 <- (intersect(adjs_genes2, adjs_genes1))
+adjs_genes1 <- (intersect(adjs_genes2, adjs_genes1))
+# revisar antes
+
+setwd("~/TCGA_miRNA_BC/datos_nivel3_norm_TCGA/RNAseq_86.enfermos.rsem/")
+
+M_genes2 <- lapply(adjs_genes2, adjtosqmtx)
+x_genes2 <- t(rbind.fill.matrix(M_genes2))
+x_genes2[is.na(x_genes2)] <- 0
+class(x_genes2) <- "numeric"
+
+names_genes2 <- gsub('.{6}$','', adjs_genes2)
+colnames(x_genes2) <- names_genes2
+x_genes2 <- x_genes2[names_genes2, ]
+x_genes2 <- x_genes2[sort(rownames(x_genes2)), sort(colnames(x_genes2)) ]
+class(x_genes2)
+isSymmetric(x_genes2)
+
+setwd("~/TCGA_miRNA_BC/miRNAs_resultados/graficas")
+write.table(x_genes2, file = "enfermos_gene_p1_full_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
+
+setwd("~/TCGA_miRNA_BC/datos_nivel3_norm_TCGA/RNAseq_86.sanos.rsem/")
+M_genes1 <- lapply(adjs_genes1, adjtosqmtx)
+x_genes1 <- t(rbind.fill.matrix(M_genes1))
+x_genes1[is.na(x_genes1)] <- 0
+class(x_genes1) <- "numeric"
+
+names_genes1 <- gsub('.{6}$','', adjs_genes1)
+colnames(x_genes1) <- names_genes1
+x_genes1 <- x_genes1[names_genes1, ]
+x_genes1 <- x_genes1[sort(rownames(x_genes1)), sort(colnames(x_genes1)) ]
+class(x_genes1)
+isSymmetric(x_genes1)
+
+setwd("~/TCGA_miRNA_BC/miRNAs_resultados/graficas")
+write.table(x_genes1, file = "sanos_gene_p1_full_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
+
+genes_dpi2 <- aracne(mim =  x_genes2, eps = 0.1)
+write.table(genes_dpi2, file = "enfermos_gene_dpi_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
+genes_dpi1 <- aracne(mim =  x_genes1, eps = 0.1)
+write.table(genes_dpi1, file = "sanos_gene_dpi_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
+
+###########################################################################################################################
+### quantiles
+###########################################################################################################################
+
+
+## variables
+# mir_mir1
+# mir_mir2
+# x_mir1
+# x_mir2
+# mir_dpi1
+# mir_dpi2
+# mirmir_dpi1
+# mirmir_dpi2
+# x_genes1
+# x_genes2
+# genes_dpi1
+# genes_dpi2
+
