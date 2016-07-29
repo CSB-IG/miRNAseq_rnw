@@ -188,12 +188,135 @@ write.table(genes_dpi1, file = "sanos_gene_dpi_adjmtx.txt", sep = "\t", col.name
 # mir_mir2
 # x_mir1
 # x_mir2
+# x_genes1
+# x_genes2
+############## con DPI ######################################################################################################
 # mir_dpi1
 # mir_dpi2
 # mirmir_dpi1
 # mirmir_dpi2
-# x_genes1
-# x_genes2
 # genes_dpi1
 # genes_dpi2
+
+mirgen_sanos <- mir_dpi1
+mirgen_enfermos <- mir_dpi2
+mirmir_sanos <- mirmir_dpi1
+mirmir_enfermos <- mirmir_dpi2
+gen_sanos <- genes_dpi1
+gen_enfermos <- genes_dpi2
+
+mirgen_sanos <- mirgen_sanos[lower.tri(mirgen_sanos, diag=F)]
+mirgen_enfermos <- mirgen_enfermos[lower.tri(mirgen_enfermos, diag=F)]
+mirmir_sanos <- mirmir_sanos[lower.tri(mirmir_sanos, diag=F)]
+mirmir_enfermos <- mirmir_enfermos[lower.tri(mirmir_enfermos, diag=F)]
+gen_sanos <- gen_sanos[lower.tri(gen_sanos, diag=F)]
+gen_enfermos <- gen_enfermos[lower.tri(gen_enfermos, diag=F)]
+
+# crear vector con todos los valores de MI
+
+
+
+###### x ###########################################
+mg_sanos <- sort(mirgen_sanos[mirgen_sanos != 0])
+mg_enfermos <- sort(mirgen_enfermos[mirgen_enfermos != 0])
+mm_sanos <- sort(mirmir_sanos[mirmir_sanos != 0])
+mm_enfermos <- sort(mirmir_enfermos[mirmir_enfermos != 0])
+gg_sanos <- sort(gen_sanos[gen_sanos != 0])
+gg_enfermos <- sort(gen_enfermos[gen_enfermos != 0])
+
+################# y ####################################
+mg_sanosy <- length(mg_sanos):1
+mg_enfermosy <- length(mg_enfermos):1
+mm_sanosy <- length(mm_sanos):1
+mm_enfermosy <- length(mm_enfermos):1
+gg_sanosy <- length(gg_sanos):1
+gg_enfermosy <- length(gg_enfermos):1
+
+# plot
+png("sanos.png", width= 800, height= 800)
+plot(mg_sanos,mg_sanosy, col="red")
+par(new=TRUE)
+plot(mm_sanos, mm_sanosy, col="blue")
+par(new=TRUE)
+plot(gg_sanos, gg_sanosy, col="green")
+dev.off()
+
+png("enfermos.png", width= 800, height= 800)
+plot(mg_enfermos,mg_enfermosy, col="red")
+par(new=TRUE)
+plot(mm_enfermos, mm_enfermosy, col="blue")
+par(new=TRUE)
+plot(gg_enfermos, gg_enfermosy, col="green")
+dev.off()
+
+png("sanosmg.png", width= 800, height= 800)
+plot(mg_sanos,mg_sanosy, col="red")
+dev.off()
+
+png("sanosmm.png", width= 800, height= 800)
+plot(mm_sanos, mm_sanosy, col="blue")
+dev.off()
+
+png("sanosgg.png", width= 800, height= 800)
+plot(gg_sanos, gg_sanosy, col="green")
+dev.off()
+
+png("enfermosmg.png", width= 800, height= 800)
+plot(mg_enfermos,mg_enfermosy, col="red")
+dev.off()
+
+png("enfermosmm.png", width= 800, height= 800)
+plot(mm_enfermos, mm_enfermosy, col="blue")
+dev.off()
+
+png("enfermosgg.png", width= 800, height= 800)
+plot(gg_enfermos, gg_enfermosy, col="green")
+dev.off()
+
+#################
+mg_sanos <- mirgen_sanos[mirgen_sanos != 0]
+mg_enfermos <- mirgen_enfermos[mirgen_enfermos != 0]
+mm_sanos <- mirmir_sanos[mirmir_sanos != 0]
+mm_enfermos <- mirmir_enfermos[mirmir_enfermos != 0]
+gg_sanos <- gen_sanos[gen_sanos != 0]
+gg_enfermos <- gen_enfermos[gen_enfermos != 0]
+
+mg_sanos <- unique(sort(mg_sanos))
+mg_enfermos <- unique(sort(mg_enfermos))
+mm_sanos <- unique(sort(mm_sanos))
+mm_enfermos <- unique(sort(mm_enfermos))
+gg_sanos <- unique(sort(gg_sanos))
+gg_enfermos <- unique(sort(gg_enfermos))
+
+# identificar cuantos valores suman para cada valor
+
+int_mg_sanos <- sapply(mg_sanos, function(x) sum(mirgen_sanos > x))
+int_mg_enfermos <- sapply(mg_enfermos, function(x) sum(mirgen_enfermos > x))
+int_mm_sanos <- sapply(mm_sanos, function(x) sum(mirmir_sanos > x))
+int_mm_enfermos <- sapply(mm_enfermos, function(x) sum(mirmir_enfermos > x))
+int_gg_sanos <- sapply(gg_sanos, function(x) sum(gg_sanos > x))
+int_gg_enfermos <- sapply(gg_enfermos, function(x) sum(gg_enfermos > x))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
