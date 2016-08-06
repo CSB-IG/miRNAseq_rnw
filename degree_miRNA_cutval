@@ -1,0 +1,243 @@
+
+e_completa <- read.table(file = "~/TCGA_miRNA_BC/miRNAs_resultados/enfermos_RNAseq.adj.txt", header = T, sep = '\t')
+e_completa[e_completa < 0.3964707] <- 0
+library(minet) 
+edpi <- aracne(mim = e_completa, eps = 0.1) 
+egdpi <- graph.adjacency(adjmatrix= edpi, mode='undirected', diag=F, weighted=T)
+edpisif <- get.data.frame(egdpi)
+z1 <- rbind(x,edpisif)
+m1 <- graph.data.frame(z1, directed=FALSE)
+d1 <- degree(m1)
+tail(sort(d1))
+
+x <- read.table("enfermos.mir.99.980.dpi.sif.txt", header=T)
+y <- read.table("~/TCGA_miRNA_BC/miRNAs_resultados/enfermos.99.987.sif.txt", header=T)
+z <- rbind(x,y)
+m <- graph.data.frame(z, directed=FALSE)
+d <- degree(m)
+tail(sort(d))
+zz <- z
+c <- zz[zz$weight >= 0.16482207,]
+mm <- graph.data.frame(c, directed=FALSE)
+dd <- degree(mm)
+tail(sort(dd))
+write.table(tail(sort(dd), n=100), "100_mir9987_gen9987.txt", quote=FALSE, sep="\t")
+write.table(tail(sort(d), n=100), "100_mir9980_gen9987.txt", quote=FALSE, sep="\t")
+write.table(tail(sort(d1), n=100), "100_mir9980_gen9980.txt", quote=FALSE, sep="\t")
+
+> tail(sort(dd), n=10)
+hsa-mir-199b.MIMAT0004563  hsa-mir-142.MIMAT0000433  hsa-mir-134.MIMAT0000447 
+                      375                       387                       390 
+ hsa-mir-223.MIMAT0000280 hsa-mir-146a.MIMAT0000449  hsa-mir-155.MIMAT0000646 
+                      393                       395                       395 
+ hsa-mir-337.MIMAT0000754  hsa-mir-150.MIMAT0000451 hsa-mir-199a.MIMAT0000231 
+                      454                       473                       474 
+hsa-mir-199b.MIMAT0000263 
+                      493 
+> tail(sort(d), n=10)                                                           
+hsa-mir-199a.MIMAT0000232 hsa-mir-199b.MIMAT0004563  hsa-mir-99a.MIMAT0000097 
+                      458                       458                       480 
+ hsa-mir-223.MIMAT0000280  hsa-mir-134.MIMAT0000447   hsa-let-7c.MIMAT0000064 
+                      482                       496                       547 
+ hsa-mir-150.MIMAT0000451  hsa-mir-337.MIMAT0000754 hsa-mir-199a.MIMAT0000231 
+                      560                       592                       651 
+hsa-mir-199b.MIMAT0000263 
+                      655
+
+> tail(sort(dd), n=20)
+ hsa-mir-379.MIMAT0000733  hsa-mir-758.MIMAT0003879  hsa-mir-511.MIMAT0002808 
+                      252                       274                       287 
+ hsa-mir-223.MIMAT0004570  hsa-mir-150.MIMAT0004610  hsa-mir-382.MIMAT0000737 
+                      301                       324                       325 
+ hsa-mir-99a.MIMAT0000097  hsa-mir-214.MIMAT0004564   hsa-let-7c.MIMAT0000064 
+                      328                       345                       373 
+hsa-mir-199a.MIMAT0000232 hsa-mir-199b.MIMAT0004563  hsa-mir-142.MIMAT0000433 
+                      375                       375                       387 
+ hsa-mir-134.MIMAT0000447  hsa-mir-223.MIMAT0000280 hsa-mir-146a.MIMAT0000449 
+                      390                       393                       395 
+ hsa-mir-155.MIMAT0000646  hsa-mir-337.MIMAT0000754  hsa-mir-150.MIMAT0000451 
+                      395                       454                       473 
+hsa-mir-199a.MIMAT0000231 hsa-mir-199b.MIMAT0000263 
+                      474                       493
+
+> tail(sort(d), n=20)
+ hsa-mir-379.MIMAT0000733  hsa-mir-758.MIMAT0003879  hsa-mir-150.MIMAT0004610 
+                      362                       362                       367 
+ hsa-mir-223.MIMAT0004570  hsa-mir-511.MIMAT0002808  hsa-mir-214.MIMAT0004564 
+                      374                       409                       433 
+ hsa-mir-142.MIMAT0000433  hsa-mir-382.MIMAT0000737  hsa-mir-155.MIMAT0000646 
+                      440                       443                       455 
+hsa-mir-146a.MIMAT0000449 hsa-mir-199a.MIMAT0000232 hsa-mir-199b.MIMAT0004563 
+                      457                       458                       458 
+ hsa-mir-99a.MIMAT0000097  hsa-mir-223.MIMAT0000280  hsa-mir-134.MIMAT0000447 
+                      480                       482                       496 
+  hsa-let-7c.MIMAT0000064  hsa-mir-150.MIMAT0000451  hsa-mir-337.MIMAT0000754 
+                      547                       560                       592 
+hsa-mir-199a.MIMAT0000231 hsa-mir-199b.MIMAT0000263 
+                      651                       655
+
+> tail(sort(dd), n=50)
+                       CD3D                      SLAMF1 
+                        155                         155 
+    hsa-let-7i.MIMAT0004585                       SNX20 
+                        158                         160 
+                        LCK                        CD3E 
+                        161                         162 
+                     IL10RA                        TMC8 
+                        162                         162 
+                        CD2                       PTPN7 
+                        163                         164 
+                      CD247    hsa-mir-204.MIMAT0000265 
+                        165                         166 
+   hsa-mir-409.MIMAT0001639    hsa-mir-369.MIMAT0001621 
+                        171                         172 
+                   ARHGAP25                       IL2RG 
+                        175                         179 
+                      IKZF1   hsa-mir-125b.MIMAT0000423 
+                        181                         184 
+                      SASH3    hsa-mir-142.MIMAT0000434 
+                        184                         185 
+   hsa-mir-370.MIMAT0000722 hsa-mir-125b-2.MIMAT0004603 
+                        187                         190 
+   hsa-mir-493.MIMAT0002813    hsa-mir-10b.MIMAT0004556 
+                        193                         199 
+   hsa-mir-214.MIMAT0000271    hsa-mir-485.MIMAT0002176 
+                        207                         207 
+   hsa-mir-127.MIMAT0000446    hsa-mir-152.MIMAT0000438 
+                        230                         235 
+   hsa-mir-218.MIMAT0000275    hsa-mir-411.MIMAT0003329 
+                        236                         243 
+   hsa-mir-379.MIMAT0000733    hsa-mir-758.MIMAT0003879 
+                        252                         274 
+   hsa-mir-511.MIMAT0002808    hsa-mir-223.MIMAT0004570 
+                        287                         301 
+   hsa-mir-150.MIMAT0004610    hsa-mir-382.MIMAT0000737 
+                        324                         325 
+   hsa-mir-99a.MIMAT0000097    hsa-mir-214.MIMAT0004564 
+                        328                         345 
+    hsa-let-7c.MIMAT0000064   hsa-mir-199a.MIMAT0000232 
+                        373                         375 
+  hsa-mir-199b.MIMAT0004563    hsa-mir-142.MIMAT0000433 
+                        375                         387 
+   hsa-mir-134.MIMAT0000447    hsa-mir-223.MIMAT0000280 
+                        390                         393 
+  hsa-mir-146a.MIMAT0000449    hsa-mir-155.MIMAT0000646 
+                        395                         395 
+   hsa-mir-337.MIMAT0000754    hsa-mir-150.MIMAT0000451 
+                        454                         473 
+  hsa-mir-199a.MIMAT0000231   hsa-mir-199b.MIMAT0000263 
+                        474                         493 
+
+> tail(sort(d), n=50)
+   hsa-mir-410.MIMAT0002171    hsa-mir-154.MIMAT0000452 
+                        175                         179 
+                      IL2RG    hsa-mir-141.MIMAT0000432 
+                        179                         180 
+                      IKZF1                       SASH3 
+                        182                         185 
+   hsa-mir-432.MIMAT0002814    hsa-mir-127.MIMAT0004604 
+                        186                         197 
+   hsa-mir-377.MIMAT0004689    hsa-mir-10b.MIMAT0000254 
+                        198                         206 
+   hsa-mir-495.MIMAT0002817    hsa-mir-381.MIMAT0000736 
+                        207                         210 
+   hsa-mir-409.MIMAT0001638    hsa-mir-142.MIMAT0000434 
+                        217                         221 
+   hsa-mir-204.MIMAT0000265   hsa-mir-190b.MIMAT0004929 
+                        233                         240 
+   hsa-mir-370.MIMAT0000722    hsa-mir-409.MIMAT0001639 
+                        245                         255 
+   hsa-mir-369.MIMAT0001621     hsa-let-7i.MIMAT0004585 
+                        256                         264 
+   hsa-mir-214.MIMAT0000271 hsa-mir-125b-2.MIMAT0004603 
+                        271                         287 
+   hsa-mir-485.MIMAT0002176    hsa-mir-10b.MIMAT0004556 
+                        287                         293 
+   hsa-mir-152.MIMAT0000438   hsa-mir-125b.MIMAT0000423 
+                        299                         302 
+   hsa-mir-493.MIMAT0002813    hsa-mir-218.MIMAT0000275 
+                        307                         325 
+   hsa-mir-127.MIMAT0000446    hsa-mir-411.MIMAT0003329 
+                        335                         354 
+   hsa-mir-379.MIMAT0000733    hsa-mir-758.MIMAT0003879 
+                        362                         362 
+   hsa-mir-150.MIMAT0004610    hsa-mir-223.MIMAT0004570 
+                        367                         374 
+   hsa-mir-511.MIMAT0002808    hsa-mir-214.MIMAT0004564 
+                        409                         433 
+   hsa-mir-142.MIMAT0000433    hsa-mir-382.MIMAT0000737 
+                        440                         443 
+   hsa-mir-155.MIMAT0000646   hsa-mir-146a.MIMAT0000449 
+                        455                         457 
+  hsa-mir-199a.MIMAT0000232   hsa-mir-199b.MIMAT0004563 
+                        458                         458 
+   hsa-mir-99a.MIMAT0000097    hsa-mir-223.MIMAT0000280 
+                        480                         482 
+   hsa-mir-134.MIMAT0000447     hsa-let-7c.MIMAT0000064 
+                        496                         547 
+   hsa-mir-150.MIMAT0000451    hsa-mir-337.MIMAT0000754 
+                        560                         592 
+  hsa-mir-199a.MIMAT0000231   hsa-mir-199b.MIMAT0000263 
+                        651                         655 
+
+> tail(sort(d1), n=10)
+hsa-mir-199a.MIMAT0000232 hsa-mir-199b.MIMAT0004563  hsa-mir-99a.MIMAT0000097 
+                      458                       458                       480 
+ hsa-mir-223.MIMAT0000280  hsa-mir-134.MIMAT0000447   hsa-let-7c.MIMAT0000064 
+                      482                       496                       547 
+ hsa-mir-150.MIMAT0000451  hsa-mir-337.MIMAT0000754 hsa-mir-199a.MIMAT0000231 
+                      560                       592                       651 
+hsa-mir-199b.MIMAT0000263 
+                      655 
+
+tail(sort(d1), n=50)
+                     SLAMF1    hsa-mir-432.MIMAT0002814 
+                        185                         186 
+                      PTPN7                       IL2RG 
+                        187                         193 
+                      IKZF1                    ARHGAP25 
+                        196                         197 
+   hsa-mir-127.MIMAT0004604    hsa-mir-377.MIMAT0004689 
+                        197                         198 
+                      SASH3    hsa-mir-10b.MIMAT0000254 
+                        204                         206 
+   hsa-mir-495.MIMAT0002817    hsa-mir-381.MIMAT0000736 
+                        207                         210 
+   hsa-mir-409.MIMAT0001638    hsa-mir-142.MIMAT0000434 
+                        217                         221 
+   hsa-mir-204.MIMAT0000265   hsa-mir-190b.MIMAT0004929 
+                        233                         240 
+   hsa-mir-370.MIMAT0000722    hsa-mir-409.MIMAT0001639 
+                        245                         255 
+   hsa-mir-369.MIMAT0001621     hsa-let-7i.MIMAT0004585 
+                        256                         264 
+   hsa-mir-214.MIMAT0000271 hsa-mir-125b-2.MIMAT0004603 
+                        271                         287 
+   hsa-mir-485.MIMAT0002176    hsa-mir-10b.MIMAT0004556 
+                        287                         293 
+   hsa-mir-152.MIMAT0000438   hsa-mir-125b.MIMAT0000423 
+                        299                         302 
+   hsa-mir-493.MIMAT0002813    hsa-mir-218.MIMAT0000275 
+                        307                         325 
+   hsa-mir-127.MIMAT0000446    hsa-mir-411.MIMAT0003329 
+                        335                         354 
+   hsa-mir-379.MIMAT0000733    hsa-mir-758.MIMAT0003879 
+                        362                         362 
+   hsa-mir-150.MIMAT0004610    hsa-mir-223.MIMAT0004570 
+                        367                         374 
+   hsa-mir-511.MIMAT0002808    hsa-mir-214.MIMAT0004564 
+                        409                         433 
+   hsa-mir-142.MIMAT0000433    hsa-mir-382.MIMAT0000737 
+                        440                         443 
+   hsa-mir-155.MIMAT0000646   hsa-mir-146a.MIMAT0000449 
+                        455                         457 
+  hsa-mir-199a.MIMAT0000232   hsa-mir-199b.MIMAT0004563 
+                        458                         458 
+   hsa-mir-99a.MIMAT0000097    hsa-mir-223.MIMAT0000280 
+                        480                         482 
+   hsa-mir-134.MIMAT0000447     hsa-let-7c.MIMAT0000064 
+                        496                         547 
+   hsa-mir-150.MIMAT0000451    hsa-mir-337.MIMAT0000754 
+                        560                         592 
+  hsa-mir-199a.MIMAT0000231   hsa-mir-199b.MIMAT0000263 
+                        651                         655
