@@ -164,6 +164,10 @@ isSymmetric(x_genes2)
 setwd("~/TCGA_miRNA_BC/miRNAs_resultados/graficas")
 write.table(x_genes2, file = "enfermos_gene_p1_full_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
 
+x_gen2_g <- graph.adjacency(adjmatrix= x_genes2, mode='undirected', diag=F, weighted=T)
+x_gen2_sif <- get.data.frame(x_gen2_g)
+write.table(x_gen2_sif, file = "enfermos_mir_mir_p1_full_sif.txt", sep = "\t", col.names= T, row.names= F, quote = F )
+
 setwd("~/TCGA_miRNA_BC/datos_nivel3_norm_TCGA/RNAseq_86.sanos.rsem/")
 M_genes1 <- lapply(adjs_genes1, adjtosqmtx)
 x_genes1 <- t(rbind.fill.matrix(M_genes1))
