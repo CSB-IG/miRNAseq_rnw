@@ -67,6 +67,11 @@ setwd("~/TCGA_miRNA_BC/miRNAs_resultados/graficas")
 write.table(mir_mir2, file = "enfermos_mir_mir_p1_full_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
 write.table(x_mir2, file = "enfermos_mir_gene_p1_full_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
 
+x_mir2_sif <- graph.adjacency(adjmatrix= x_mir2, mode='undirected', diag=F, weighted=T)
+mir_mir2_sif <- graph.adjacency(adjmatrix= mir_mir2, mode='undirected', diag=F, weighted=T)
+write.table(mir_mir2_sif, file = "enfermos_mir_mir_p1_full_sif.txt", sep = "\t", col.names= T, row.names= F, quote = F )
+write.table(x_mir2_sif, file = "enfermos_mir_gene_p1_full_sif.txt", sep = "\t", col.names= T, row.names= F, quote = F )
+
 mir_dpi2 <- aracne(mim =  x_mir2, eps = 0.1)
 mirmir_dpi2 <- aracne(mim =  mir_mir2, eps = 0.1)
 write.table(mir_dpi2, file = "enfermos_mir_gene_dpi_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
