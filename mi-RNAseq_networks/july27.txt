@@ -188,6 +188,43 @@ genes_dpi2 <- aracne(mim =  x_genes2, eps = 0.1)
 write.table(genes_dpi2, file = "enfermos_gene_dpi_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
 genes_dpi1 <- aracne(mim =  x_genes1, eps = 0.1)
 write.table(genes_dpi1, file = "sanos_gene_dpi_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
+#########################################################################################################################
+# matrix completa
+# ~/TCGA_miRNA_BC/miRNAs_resultados/miRNAS_86_resultados/casos_resultados_ARACNE
+# ~/TCGA_miRNA_BC/miRNAs_resultados/miRNAS_86_resultados/controles_resultados_ARACNE
+
+adjs_e <- list.files(path="~/TCGA_miRNA_BC/miRNAs_resultados/miRNAS_86_resultados/casos_resultados_ARACNE/", pattern="*_1.adj")
+adjs_s <- list.files(path="~/TCGA_miRNA_BC/miRNAs_resultados/miRNAS_86_resultados/controles_resultados_ARACNE", pattern="*_1.adj")
+length(adjs_e)
+length(adjs_s)
+
+length(intersect(adjs_e, adjs_s))
+# 15769
+
+adjs_e <- (intersect(adjs_e, adjs_s))
+adjs_s <- (intersect(adjs_e, adjs_s))
+
+# revisar antes
+setwd("~/TCGA_miRNA_BC/miRNAs_resultados/miRNAS_86_resultados/casos_resultados_ARACNE/")
+M_e <- lapply(adjs_e, adjtosqmtx)
+xe <- t(rbind.fill.matrix(M_e))
+xe[is.na(xe)] <- 0
+class(xe) <- "numeric"
+
+names_e <- gsub('.{6}$','', adjs_e)
+colnames(xe) <- names_e
+xe <- xe[names_e, ]
+xe <- xe[sort(rownames(xe)), sort(colnames(xe)) ]
+class(xe)
+isSymmetric(xe)
+
+setwd("~/TCGA_miRNA_BC/miRNAs_resultados/subredes")
+write.table(completa_e, file = "enfermos_p1_full_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
+
+
+norm <-function(m){
+    return (m - min(m))/(max(m)-min(m))
+}
 
 ###########################################################################################################################
 ### quantiles
