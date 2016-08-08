@@ -93,7 +93,7 @@ library(plyr)
 library(minet)
 library(igraph)
 
-adjs <- list.files(pattern="*.adj")
+adjs <- sort(list.files(pattern="*.adj"))
 length(adjs)
 
 adjtosqmtx <- function(g){
