@@ -24,7 +24,6 @@ adjtosqmtx <- function(g){
 M <- lapply(adjs, adjtosqmtx)
 x <- t(rbind.fill.matrix(M))
 
-x[is.na(x)] <- 0
 class(x) <- "numeric"
 names <- gsub('.{6}$','', adjs)
 colnames(x) <- names
@@ -36,6 +35,8 @@ a <- x[15743:16375, 15743:16375]
 [1] 400689
 > 633**2
 [1] 400689
+
+x[is.na(x)] <- 0
 
 # b no tiene miRNAS en rownames
 b <- x[1:15742, 1:15742]
