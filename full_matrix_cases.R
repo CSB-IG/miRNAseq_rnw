@@ -43,7 +43,7 @@ b <- x[1:15742, 1:15742]
 
 adjs_s <- list.files(path="~/TCGA_miRNA_BC/miRNAs_resultados/miRNAS_86_resultados/RNAseq_controles_resultados_ARACNE", pattern="*_1.adj")
 length(adjs_s)
-# [1] 15742
+# [1] 15592
 length(intersect(adjs, adjs_s))
 # [1] 15136
 genes <- (intersect(adjs, adjs_s))
