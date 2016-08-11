@@ -214,8 +214,6 @@ gen_enfermos <- gen_enfermos[lower.tri(gen_enfermos, diag=F)]
 
 # crear vector con todos los valores de MI
 
-
-
 ###### x ###########################################
 mg_sanos <- sort(mirgen_sanos[mirgen_sanos != 0])
 mg_enfermos <- sort(mirgen_enfermos[mirgen_enfermos != 0])
@@ -225,6 +223,7 @@ gg_sanos <- sort(gen_sanos[gen_sanos != 0])
 gg_enfermos <- sort(gen_enfermos[gen_enfermos != 0])
 
 ################# y ####################################
+
 mg_sanosy <- length(mg_sanos):1
 mg_enfermosy <- length(mg_enfermos):1
 mm_sanosy <- length(mm_sanos):1
@@ -232,48 +231,22 @@ mm_enfermosy <- length(mm_enfermos):1
 gg_sanosy <- length(gg_sanos):1
 gg_enfermosy <- length(gg_enfermos):1
 
-# plot
-png("sanos.png", width= 800, height= 800)
-plot(mg_sanos,mg_sanosy, col="red")
-par(new=TRUE)
-plot(mm_sanos, mm_sanosy, col="blue")
-par(new=TRUE)
+##################### plot ##############################
+
+png("sanos.png", width= 1000, height= 1000)
 plot(gg_sanos, gg_sanosy, col="green")
+points(mg_sanos,mg_sanosy, col="red")
+points(mm_sanos, mm_sanosy, col="blue")
 dev.off()
 
-png("enfermos.png", width= 800, height= 800)
-plot(mg_enfermos,mg_enfermosy, col="red")
-par(new=TRUE)
-plot(mm_enfermos, mm_enfermosy, col="blue")
-par(new=TRUE)
+png("enfermos.png", width= 1000, height= 1000)
 plot(gg_enfermos, gg_enfermosy, col="green")
-dev.off()
-
-png("sanosmg.png", width= 800, height= 800)
-plot(mg_sanos,mg_sanosy, col="red")
-dev.off()
-
-png("sanosmm.png", width= 800, height= 800)
-plot(mm_sanos, mm_sanosy, col="blue")
-dev.off()
-
-png("sanosgg.png", width= 800, height= 800)
-plot(gg_sanos, gg_sanosy, col="green")
-dev.off()
-
-png("enfermosmg.png", width= 800, height= 800)
-plot(mg_enfermos,mg_enfermosy, col="red")
-dev.off()
-
-png("enfermosmm.png", width= 800, height= 800)
-plot(mm_enfermos, mm_enfermosy, col="blue")
-dev.off()
-
-png("enfermosgg.png", width= 800, height= 800)
-plot(gg_enfermos, gg_enfermosy, col="green")
+points(mg_enfermos,mg_enfermosy, col="red")
+points(mm_enfermos, mm_enfermosy, col="blue")
 dev.off()
 
 #################
+
 mg_sanos <- mirgen_sanos[mirgen_sanos != 0]
 mg_enfermos <- mirgen_enfermos[mirgen_enfermos != 0]
 mm_sanos <- mirmir_sanos[mirmir_sanos != 0]
@@ -297,9 +270,25 @@ int_mm_enfermos <- sapply(mm_enfermos, function(x) sum(mirmir_enfermos > x))
 int_gg_sanos <- sapply(gg_sanos, function(x) sum(gg_sanos > x))
 int_gg_enfermos <- sapply(gg_enfermos, function(x) sum(gg_enfermos > x))
 
+redes aleatorias
 
+# sanos
+sanos <- sample_gnm(4140, 37586, directed=FALSE, loops=FALSE)
+pdf("sanos_degree.pdf")
+plot(degree.distribution(sanos), xlab="degree", 
+	ylab="frequency", pch=1, col=1, type="b")
+dev.off()
+       
+# enfermos
+sanos <- sample_gnm(4140, 37586, directed=FALSE, loops=FALSE)
+enfermos <- sample_degseq(out.deg=degree_enfermos, in.deg=NULL, method="vl")
+pdf("enfermos_degree.pdf", )
+plot(degree.distribution(enfermos), xlab="degree", 
+	ylab="frequency", pch=1, col=1, type="b")
+dev.off()
 
-
+sample_degseq(out.deg, in.deg = NULL, method = c("simple", "vl",
+"simple.no.multiple"))
 
 
 
