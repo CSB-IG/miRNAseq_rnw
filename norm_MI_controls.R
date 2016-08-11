@@ -103,7 +103,7 @@ write.table(xsifmg, file = "sanos_mir_gen_p1_sif.txt", sep = "\t", col.names= T,
 mir_gen_norm <- sanos_norm
 mir_gen_norm[genes,genes] <- NA
 mir_gen_norm[mir,mir] <- NA
-mir_gen_norm[is.na(mir_gen)] <- 0
+mir_gen_norm[is.na(mir_gen_norm)] <- 0
 isSymmetric(mir_gen_norm)
 
 write.table(mir_gen_norm, file = "sanos_mir_gen_p1_norm_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F)
