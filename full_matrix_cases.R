@@ -29,7 +29,7 @@ class(x) <- "numeric"
 names <- gsub('.{6}$','', adjs)
 colnames(x) <- names
 
-a <- x[15593:16225, 15593:16225]
+a <- x[15743:16375, 15743:16375]
 > dim(a)
 [1] 633 633
 > sum(is.na(a))
@@ -38,7 +38,7 @@ a <- x[15593:16225, 15593:16225]
 [1] 400689
 
 # b no tiene miRNAS en rownames
-b <- x[1:15592, 1:15592]
+b <- x[1:15742, 1:15742]
 
 adjs_s <- list.files(path="~/TCGA_miRNA_BC/miRNAs_resultados/miRNAS_86_resultados/RNAseq_controles_resultados_ARACNE", pattern="*_1.adj")
 length(adjs_s)
