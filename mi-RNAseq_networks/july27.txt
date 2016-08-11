@@ -67,6 +67,13 @@ setwd("~/TCGA_miRNA_BC/miRNAs_resultados/graficas")
 write.table(mir_mir2, file = "enfermos_mir_mir_p1_full_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
 write.table(x_mir2, file = "enfermos_mir_gene_p1_full_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
 
+x_mir2_g <- graph.adjacency(adjmatrix= x_mir2, mode='undirected', diag=F, weighted=T)
+mir_mir2_g <- graph.adjacency(adjmatrix= mir_mir2, mode='undirected', diag=F, weighted=T)
+mir_mir2_sif <- get.data.frame(mir_mir2_g)
+x_mir2_sif <- get.data.frame(x_mir2_g)
+write.table(mir_mir2_sif, file = "enfermos_mir_mir_p1_full_sif.txt", sep = "\t", col.names= T, row.names= F, quote = F )
+write.table(x_mir2_sif, file = "enfermos_mir_gene_p1_full_sif.txt", sep = "\t", col.names= T, row.names= F, quote = F )
+
 mir_dpi2 <- aracne(mim =  x_mir2, eps = 0.1)
 mirmir_dpi2 <- aracne(mim =  mir_mir2, eps = 0.1)
 write.table(mir_dpi2, file = "enfermos_mir_gene_dpi_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
@@ -157,6 +164,10 @@ isSymmetric(x_genes2)
 setwd("~/TCGA_miRNA_BC/miRNAs_resultados/graficas")
 write.table(x_genes2, file = "enfermos_gene_p1_full_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
 
+x_gen2_g <- graph.adjacency(adjmatrix= x_genes2, mode='undirected', diag=F, weighted=T)
+x_gen2_sif <- get.data.frame(x_gen2_g)
+write.table(x_gen2_sif, file = "enfermos_mir_mir_p1_full_sif.txt", sep = "\t", col.names= T, row.names= F, quote = F )
+
 setwd("~/TCGA_miRNA_BC/datos_nivel3_norm_TCGA/RNAseq_86.sanos.rsem/")
 M_genes1 <- lapply(adjs_genes1, adjtosqmtx)
 x_genes1 <- t(rbind.fill.matrix(M_genes1))
@@ -177,6 +188,43 @@ genes_dpi2 <- aracne(mim =  x_genes2, eps = 0.1)
 write.table(genes_dpi2, file = "enfermos_gene_dpi_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
 genes_dpi1 <- aracne(mim =  x_genes1, eps = 0.1)
 write.table(genes_dpi1, file = "sanos_gene_dpi_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
+#########################################################################################################################
+# matrix completa
+# ~/TCGA_miRNA_BC/miRNAs_resultados/miRNAS_86_resultados/casos_resultados_ARACNE
+# ~/TCGA_miRNA_BC/miRNAs_resultados/miRNAS_86_resultados/controles_resultados_ARACNE
+
+adjs_e <- list.files(path="~/TCGA_miRNA_BC/miRNAs_resultados/miRNAS_86_resultados/casos_resultados_ARACNE/", pattern="*_1.adj")
+adjs_s <- list.files(path="~/TCGA_miRNA_BC/miRNAs_resultados/miRNAS_86_resultados/controles_resultados_ARACNE", pattern="*_1.adj")
+length(adjs_e)
+length(adjs_s)
+
+length(intersect(adjs_e, adjs_s))
+# 15769
+
+adjs_e <- (intersect(adjs_e, adjs_s))
+adjs_s <- (intersect(adjs_e, adjs_s))
+
+# revisar antes
+setwd("~/TCGA_miRNA_BC/miRNAs_resultados/miRNAS_86_resultados/casos_resultados_ARACNE/")
+M_e <- lapply(adjs_e, adjtosqmtx)
+xe <- t(rbind.fill.matrix(M_e))
+xe[is.na(xe)] <- 0
+class(xe) <- "numeric"
+
+names_e <- gsub('.{6}$','', adjs_e)
+colnames(xe) <- names_e
+xe <- xe[names_e, ]
+xe <- xe[sort(rownames(xe)), sort(colnames(xe)) ]
+class(xe)
+isSymmetric(xe)
+
+setwd("~/TCGA_miRNA_BC/miRNAs_resultados/subredes")
+write.table(completa_e, file = "enfermos_p1_full_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
+
+
+norm <-function(m){
+    return (m - min(m))/(max(m)-min(m))
+}
 
 ###########################################################################################################################
 ### quantiles
