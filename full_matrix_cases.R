@@ -82,6 +82,11 @@ normalit<-function(m){
      (m - min(m))/(max(m)-min(m))
 }
 
+write.table(enfermos, file = "enfermos_p1_full_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F)
+xg <- graph.adjacency(adjmatrix= enfermos, mode='undirected', diag=F, weighted=T)
+xsif <- get.data.frame(xg)
+write.table(xsif, file = "enfermos_p1_full_sif.txt", sep = "\t", col.names= T, row.names= F, quote = F )
+
 enfermos_norm <- normalit(enfermos)
 max(enfermos_norm)
 # must be 1
