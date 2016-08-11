@@ -1,5 +1,29 @@
 # sin ordenar x
 # solo agregar nombres de columnas
+# full matrix 
+# ~/TCGA_miRNA_BC/miRNAs_resultados/miRNAS_86_resultados/casos_resultados_ARACNE
+# ~/TCGA_miRNA_BC/miRNAs_resultados/miRNAS_86_resultados/controles_resultados_ARACNE
+
+library(plyr)
+library(minet)
+library(igraph)
+
+adjs <- sort(list.files(path="~/TCGA_miRNA_BC/miRNAs_resultados/miRNAS_86_resultados/controles_resultados_ARACNE", pattern="*.adj"))
+
+length(adjs)
+
+adjtosqmtx <- function(g){
+  a <- scan(file = g, skip = 17, what = "")
+  m <- matrix(unlist(a[-(1)]), ncol = 2, byrow = T)
+  rownames(m) <- c(m[,1])
+  m <- t(m[,2])
+  m
+}
+
+# joins all adjs in square matrix and fill empty spaces with NA
+M <- lapply(adjs, adjtosqmtx)
+x <- t(rbind.fill.matrix(M))
+
 
 x[is.na(x)] <- 0
 class(x) <- "numeric"
