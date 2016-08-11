@@ -75,14 +75,14 @@ b <- cbind(b,m)
 b <- b[,sort(colnames(b))]
 y <- y[,sort(colnames(y))]
 identical(colnames(b), colnames(y))
-enfermos <-rbind(b,y)
-enfermos <- enfermos[sort(rownames(enfermos)), sort(colnames(enfermos)) ]
+sanos <-rbind(b,y)
+sanos <- sanos[sort(rownames(sanos)), sort(colnames(sanos)) ]
 
 normalit<-function(m){
      (m - min(m))/(max(m)-min(m))
 }
 
-normalit(m)
+sanos_norm <- normalit(sanos)
 
 write.table(sanos_norm, file = "sanos_p1_full_norm_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F)
 xg_norm <- graph.adjacency(adjmatrix= sanos_norm, mode='undirected', diag=F, weighted=T)
