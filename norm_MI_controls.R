@@ -78,7 +78,7 @@ sanos <-rbind(b,y)
 sanos <- sanos[sort(rownames(sanos)), sort(colnames(sanos)) ]
 
 normalit<-function(m){
-     (m - min(m))/(max(m)-min(m))
+     (m - min(m[upper.tri(m)]))/(max(m)-min(m[upper.tri(m)]))
 }
 
 sanos_norm <- normalit(sanos)
