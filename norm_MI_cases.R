@@ -79,7 +79,7 @@ enfermos <-rbind(b,y)
 enfermos <- enfermos[sort(rownames(enfermos)), sort(colnames(enfermos)) ]
 
 normalit<-function(m){
-     (m - min(m))/(max(m)-min(m))
+     (m - min(m[upper.tri(m)]))/(max(m)-min(m[upper.tri(m)]))
 }
 
 write.table(enfermos, file = "enfermos_p1_full_adjmtx.txt", sep = "\t", col.names= NA, row.names= T, quote = F)
