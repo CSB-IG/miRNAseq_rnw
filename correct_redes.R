@@ -1,7 +1,7 @@
 
 library(igraph)
 
-# sacar dpi
+# sacar dpi a p-value 1
  
 sanos <- read.table("~/TCGA_miRNA_BC/miRNAs_resultados/subredes/sanos_p1_full_norm_adjmtx.txt")
 enfermos <- read.table("~/TCGA_miRNA_BC/miRNAs_resultados/subredes/enfermos_p1_full_norm_adjmtx.txt")
@@ -25,17 +25,17 @@ library(minet)
 sanos_dpi <- aracne(mim = sanos, eps = 0.1)
 enfermos_dpi <- aracne(mim = enfermos, eps = 0.1)
 
-write.table(sanos_dpi, file = "sanos_mir_gen_p1_adjmtx_dpi.txt", sep = "\t", col.names= NA, row.names= T, quote = F)
+write.table(sanos_dpi, file = "sanos_p1_full_adjmtx_dpi.txt", sep = "\t", col.names= NA, row.names= T, quote = F)
 
 sg <- graph.adjacency(adjmatrix= sanos_dpi, mode='undirected', diag=F, weighted=T)
 sifgs <- get.data.frame(sg)
-write.table(sifgs, file = "sanos_mir_gen_p1_sif_dpi.txt", sep = "\t", col.names= T, row.names= F, quote = F )
+write.table(sifgs, file = "sanos_p1_full_sif_dpi.txt", sep = "\t", col.names= T, row.names= F, quote = F )
 
-write.table(enfermos_dpi, file = "enfermos_mir_gen_p1_adjmtx_dpi.txt", sep = "\t", col.names= NA, row.names= T, quote = F)
+write.table(enfermos_dpi, file = "enfermos_p1_full_adjmtx_dpi.txt", sep = "\t", col.names= NA, row.names= T, quote = F)
 
 eg <- graph.adjacency(adjmatrix= enfermos_dpi, mode='undirected', diag=F, weighted=T)
 sifge <- get.data.frame(eg)
-write.table(sifge, file = "enfermos_mir_gen_p1_sif_dpi.txt", sep = "\t", col.names= T, row.names= F, quote = F )
+write.table(sifge, file = "enfermos_p1_sif_full_dpi.txt", sep = "\t", col.names= T, row.names= F, quote = F )
 
 max(sanos_dpi)
 max(enfermos_dpi)

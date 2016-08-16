@@ -142,3 +142,8 @@ write.table(mir_gen_norm, file = "enfermos_mir_gen_p1_norm_adjmtx.txt", sep = "\
 xmg_norm <- graph.adjacency(adjmatrix= mir_gen_norm, mode='undirected', diag=F, weighted=T)
 xsifmg_norm <- get.data.frame(xmg_norm)
 write.table(xsifmg_norm, file = "enfermos_mir_gen_p1_norm_sif.txt", sep = "\t", col.names= T, row.names= F, quote = F )
+
+# redes p-value
+
+
+
