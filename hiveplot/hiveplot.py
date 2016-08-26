@@ -79,8 +79,8 @@ centre = (750, 500)
 
 
 # configure mirna axes
-m1 = Axis( coords(70, -100, centre), coords(350, -120, centre), stroke="maroon", stroke_width=4)
-m2 = Axis( coords(70, -80, centre), coords(350, -60, centre), stroke="maroon", stroke_width=4)
+m1 = Axis( coords(70, -100, centre), coords(500, -105, centre), stroke="maroon", stroke_width=4)
+m2 = Axis( coords(70, -80, centre), coords(500, -75, centre), stroke="maroon", stroke_width=4)
 pos   = 0.0
 delta = 1.0 / len(mirnas)
 for n in mirnas:
@@ -113,8 +113,8 @@ bar = progressbar.ProgressBar()
 for e in bar(g.edges()):
 
     if e[0] in mirnas and e[1] in mirnas:     # mirnas to mirnas
-        h.connect(m1, e[0], 25,
-                  m2, e[1], -25,
+        h.connect(m1, e[0], 5,
+                  m2, e[1], -5,
                   stroke_width   = g.get_edge_data(*e)['w'] * 2,
                   stroke_opacity = 0.5,
                   stroke         = 'purple')
@@ -123,37 +123,37 @@ for e in bar(g.edges()):
     if e[0] in mirnas and e[1] in mirna_genes: # mirnas to mirna-genes
         h.connect(m1, e[0], -45,
                   mg, e[1], 45,
-                  stroke_width   = g.get_edge_data(*e)['w'] * 2,
-                  stroke_opacity = 0.15,
+                  stroke_width   = g.get_edge_data(*e)['w'] * 5,
+                  stroke_opacity = 0.09,
                   stroke         = 'slategray')
     elif e[0] in mirnas and e[1] in genes: # mirnas to genes
         h.connect(m2, e[0], 45,
                   ga, e[1], -45,
-                  stroke_width=g.get_edge_data(*e)['w'] * 2,
-                  stroke_opacity=0.15,
-                  stroke='navajowhite')
+                  stroke_width=g.get_edge_data(*e)['w'] * 5,
+                  stroke_opacity=0.09,
+                  stroke='gainsboro')
 
 
     if e[1] in mirnas and e[0] in mirna_genes: # mirna-genes to mirnas
         h.connect(m1, e[1], -45,
                   mg, e[0], 45,
-                  stroke_width=g.get_edge_data(*e)['w'] * 2,
-                  stroke_opacity=0.15,
+                  stroke_width=g.get_edge_data(*e)['w'] * 5,
+                  stroke_opacity=0.09,
                   stroke='slategray')
     elif e[1] in mirnas and e[0] in mirna_genes: # genes to mirnas
         h.connect(m2, e[1], 45,
                   ga, e[0], -45,
-                  stroke_width=g.get_edge_data(*e)['w'] * 2,
-                  stroke_opacity=0.15,
-                  stroke='navajowhite')
+                  stroke_width=g.get_edge_data(*e)['w'] * 5,
+                  stroke_opacity=0.09,
+                  stroke='gainsboro')
 
 
     if e[0] in genes and e[1] in genes or e[1] in genes and e[0] in genes: # gene to gene
         h.connect(ga, e[0], 33,
                   mg, e[1], -33,
-                  stroke_width=g.get_edge_data(*e)['w'] * 2,
-                  stroke_opacity=0.15,
-                  stroke='gainsboro')
+                  stroke_width=g.get_edge_data(*e)['w'] * 5,
+                  stroke_opacity=0.05,
+                  stroke='tan')
 
 print "saving"        
 h.save()
