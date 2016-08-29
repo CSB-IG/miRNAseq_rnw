@@ -53,34 +53,28 @@ def only_talks_to_mrna( gene ):
     return status
     
 
-
-mirna_genes = []
 genes       = []
 mirnas      = []
 # classify nodes
 for n in degree_ordered:
     if not n.startswith('hsa'):
-        genes.append(n)        
-        if only_talks_to_mrna(n):
-            mirna_genes.append(n)
+        genes.append(n)
     else:
         mirnas.append(n)
 
 
-print len(mirnas),len(genes),len(mirna_genes)
-
 
 h = Hiveplot( args.plot.name )
 args.plot.close()
+
 h.dwg.width=15000
 h.dwg.height=15000
 
-centre = (750, 500)
 
 
 # configure mirna axes
-m1 = Axis( coords(70, -100, centre), coords(500, -105, centre), stroke="maroon", stroke_width=4)
-m2 = Axis( coords(70, -80, centre), coords(500, -75, centre), stroke="maroon", stroke_width=4)
+m1 = Axis( (20,750), (20, 20), stroke="maroon", stroke_width=4)
+m2 = Axis( (350,750), (350, 20), stroke="maroon", stroke_width=4)
 pos   = 0.0
 delta = 1.0 / len(mirnas)
 for n in mirnas:
@@ -91,21 +85,19 @@ for n in mirnas:
     pos += delta
 
 
-
-ga = Axis(coords(50, 45, centre), coords(750, 45, centre), stroke="dodgerblue", stroke_width=4)
-mg = Axis(coords(50, 135, centre), coords(750, 135, centre), stroke="dodgerblue", stroke_width=4)
-
-
+# genes axes
+g1 = Axis( (680, 1000), (680, 20), stroke="dodgerblue", stroke_width=4)
+g2 = Axis( (1010, 1000), (1010, 20), stroke="dodgerblue", stroke_width=4)
 pos   = 0.0
 delta = 1.0 / len(genes)
 for n in genes:
     node0 = Node(n)
     node1 = Node(n) 
-    ga.add_node( node0, pos ) 
-    mg.add_node( node1, pos )
+    g1.add_node( node0, pos ) 
+    g2.add_node( node1, pos )
     pos += delta
 
-h.axes = [m1, m2, ga, mg]
+h.axes = [m1, m2, g1, g2]
 
 
 bar = progressbar.ProgressBar()
@@ -117,43 +109,29 @@ for e in bar(g.edges()):
                   m2, e[1], -5,
                   stroke_width   = g.get_edge_data(*e)['w'] * 2,
                   stroke_opacity = 0.5,
-                  stroke         = 'purple')
+                  stroke         = 'burlywood')
 
 
-    if e[0] in mirnas and e[1] in mirna_genes: # mirnas to mirna-genes
-        h.connect(m1, e[0], -45,
-                  mg, e[1], 45,
-                  stroke_width   = g.get_edge_data(*e)['w'] * 5,
-                  stroke_opacity = 0.09,
-                  stroke         = 'slategray')
-    elif e[0] in mirnas and e[1] in genes: # mirnas to genes
-        h.connect(m2, e[0], 45,
-                  ga, e[1], -45,
+    if e[0] in mirnas and e[1] in genes:
+        h.connect(m2, e[0], 5,
+                  g1, e[1], -5,
                   stroke_width=g.get_edge_data(*e)['w'] * 5,
                   stroke_opacity=0.09,
-                  stroke='gainsboro')
+                  stroke='coral')
 
-
-    if e[1] in mirnas and e[0] in mirna_genes: # mirna-genes to mirnas
-        h.connect(m1, e[1], -45,
-                  mg, e[0], 45,
+    if e[1] in mirnas and e[0] in genes:
+        h.connect(m2, e[1], 5,
+                  g1, e[0], -5,
                   stroke_width=g.get_edge_data(*e)['w'] * 5,
                   stroke_opacity=0.09,
-                  stroke='slategray')
-    elif e[1] in mirnas and e[0] in mirna_genes: # genes to mirnas
-        h.connect(m2, e[1], 45,
-                  ga, e[0], -45,
-                  stroke_width=g.get_edge_data(*e)['w'] * 5,
-                  stroke_opacity=0.09,
-                  stroke='gainsboro')
+                  stroke='coral')
 
-
-    if e[0] in genes and e[1] in genes or e[1] in genes and e[0] in genes: # gene to gene
-        h.connect(ga, e[0], 33,
-                  mg, e[1], -33,
-                  stroke_width=g.get_edge_data(*e)['w'] * 5,
-                  stroke_opacity=0.05,
-                  stroke='tan')
+    if e[0] in genes and e[1] in genes:
+        h.connect(g1, e[0], 5,
+                  g2, e[1], -5,
+                  stroke_width=g.get_edge_data(*e)['w'] * 6,
+                  stroke_opacity=0.04,
+                  stroke='darksalmon')
 
 print "saving"        
 h.save()
