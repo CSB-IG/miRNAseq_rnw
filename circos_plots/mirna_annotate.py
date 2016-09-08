@@ -8,4 +8,4 @@ with open('mirnas.txt') as f:
         (hsa,mimat) = mirna.split('.')
         mimat = mimat.strip()
                     
-        print mimat, mirna_pos.get(mimat, 'AGUAS con %s'%mimat)
+        print "%s;%s" % (mimat, mirna_pos.get(mimat, 'AGUAS con %s'%mimat))
