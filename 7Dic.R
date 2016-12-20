@@ -98,3 +98,24 @@ write.table(luma_minet, file="luma_dpi.txt", sep="\t", col.names=NA, row.names=T
 write.table(lumb_minet, file="lumb_dpi.txt", sep="\t", col.names=NA, row.names=TRUE, quote=FALSE)
 write.table(casos_minet, file="casos_dpi.txt", sep="\t", col.names=NA, row.names=TRUE, quote=FALSE)
 write.table(sanos_minet, file="sanos_dpi.txt", sep="\t", col.names=NA, row.names=TRUE, quote=FALSE)
+
+redes <- function(g){
+	library(igraph)
+	g1 <- graph.adjacency(adjmatrix= g, mode='undirected', diag=F, weighted=T)
+	g2 <- get.data.frame(g1)
+	return(g2)
+}
+
+red_basal <- redes(basal_minet)
+red_her2 <- redes(her2_minet)
+red_luma <- redes(luma_minet)
+red_lumb <- redes(lumb_minet)
+red_casos <- redes(casos_minet)
+red_sanos <- redes(sanos_minet)
+
+write.table(red_basal, file="red_basal.txt", sep="\t", col.names=TRUE, row.names=FALSE, quote=FALSE)
+write.table(red_her2, file="red_her2.txt", sep="\t", col.names=TRUE, row.names=FALSE, quote=FALSE)
+write.table(red_luma, file="red_luma.txt", sep="\t", col.names=TRUE, row.names=FALSE, quote=FALSE)
+write.table(red_lumb, file="red_lumb.txt", sep="\t", col.names=TRUE, row.names=FALSE, quote=FALSE)
+write.table(red_casos, file="red_casos.txt", sep="\t", col.names=TRUE, row.names=FALSE, quote=FALSE)
+write.table(red_sanos, file="red_sanos.txt", sep="\t", col.names=TRUE, row.names=FALSE, quote=FALSE)
