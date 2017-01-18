@@ -109,6 +109,8 @@ write.table(res_luma, file="DE_luma.txt", sep="\t", quote=F, col.names=NA, row.n
 res_lumb <- results(dds_rna, contrast=c("condition","LumB","sanos"))
 write.table(res_lumb, file="DE_lumb.txt", sep="\t", quote=F, col.names=NA, row.names=T)
 
+save.image("RNA_DE_subtypes.RData")
+
 
 #################################################################
 # micro-RNA-Seq
@@ -184,3 +186,6 @@ res_mir_lumb <- results(dds_mirna, contrast=c("condition","LumB","sanos"))
 write.table(res_mir_lumb, file="DE_mir_lumb.txt", sep="\t", quote=F, col.names=NA, row.names=T)
 
 save.image("mir_DE_subtypes.RData")
+
+
+awk '$7 < 0.001 {print $1"\t"$3"\t"$7}' DE_basal.txt > DE_basal_adj_pval_filtered.txt
