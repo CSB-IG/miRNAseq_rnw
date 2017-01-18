@@ -1,5 +1,5 @@
-we <- read.table(file = "enfermos_p1_full_sif.txt", header = T, sep = '\t')
-ws <- read.table(file = "sanos_p1_full_sif.txt", header = T, sep = '\t')
+we <- read.table(file = "enfermos_p1_full_norm_sif.txt", header = T, sep = '\t')
+ws <- read.table(file = "sanos_p1_full_norm_sif.txt", header = T, sep = '\t')
 
 we <- as.numeric(we[,3])
 ws <- as.numeric(ws[,3])
