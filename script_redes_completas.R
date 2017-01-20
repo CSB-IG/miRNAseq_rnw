@@ -1,4 +1,4 @@
-
+# OBSOLETE see Prueba and subtypes_p1_networks
 # sin ordenar x
 # solo agregar nombres de columnas
 
@@ -70,4 +70,3 @@ enfermos <- enfermos[sort(rownames(enfermos)), sort(colnames(enfermos)) ]
 
 
 a2 <- x[15743:16375,]
-

@@ -25,6 +25,7 @@ colnames(x) <- names
 mir <- rownames(x)[grepl("hsa*", rownames(x))]
 genes <- rownames(x)[grepl("^(?!hsa*)", rownames(x), perl=T)]
 
+# makes matrices symmetric with the triangle that has more information
 fullmtx <- function(x,mir,genes){
 	r <- x[,mir]
 	s <- x[mir,]
