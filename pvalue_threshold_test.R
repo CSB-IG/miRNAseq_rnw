@@ -19,7 +19,7 @@ num_int_mir <- (length(mir)*length(genes))+(((length(mir)**2)-length(mir))/2)
 100-((100/num_int_genes)*25334)
 
 (100/num_int_mir)*14892
-100-((100/num_int_mir)*14982)
+100-((100/num_int_mir)*14892)
 
 # threshold for genes from miRNA int number
 
@@ -61,7 +61,7 @@ num_int_mir <- (length(mir)*length(genes))+(((length(mir)**2)-length(mir))/2)
 100-((100/num_int_mir)*253340)
 
 (100/num_int_genes)*148920
-100-((100/num_int_genes)*1498920)
+100-((100/num_int_genes)*148920)
 
 # > (100/num_int_mir)*253340
 # [1] 2.590093
@@ -194,7 +194,62 @@ write.table(sanos_thresholddown_minet, file="sanos_thresholddown_dpi.txt", sep="
 write.table(enfermos_thresholdup_minet, file="enfermos_thresholdup_dpi.txt", sep="\t", col.names=NA, row.names=TRUE, quote=FALSE)
 write.table(sanos_thresholdup_minet, file="sanos_thresholdup_dpi.txt", sep="\t", col.names=NA, row.names=TRUE, quote=FALSE)
 
+isSymmetric(enfermos_thresholdmir_minet)
+isSymmetric(sanos_thresholdmir_minet)
+isSymmetric(enfermos_thresholdgen_minet)
+isSymmetric(sanos_thresholdgen_minet)
+isSymmetric(enfermos_thresholddown_minet)
+isSymmetric(sanos_thresholddown_minet)
+isSymmetric(enfermos_thresholdup_minet)
+isSymmetric(sanos_thresholdup_minet)
+
+redes <- function(g){
+	library(igraph)
+	g1 <- graph.adjacency(adjmatrix= g, mode='undirected', diag=F, weighted=T)
+	g2 <- get.data.frame(g1)
+	return(g2)
+}
+
+red_enfermos_thresholdmir <- redes(enfermos_thresholdmir_minet)
+red_sanos_thresholdmir <- redes(sanos_thresholdmir_minet)
+
+red_enfermos_thresholdgen <- redes(enfermos_thresholdgen_minet)
+red_sanos_thresholdgen <- redes(sanos_thresholdgen_minet)
+
+red_enfermos_thresholddown <- redes(enfermos_thresholddown_minet)
+red_sanos_thresholddown <- redes(sanos_thresholddown_minet)
+
+red_enfermos_thresholdup <- redes(enfermos_thresholdup_minet)
+red_sanos_thresholdup <- redes(sanos_thresholdup_minet)
+
+# save
+
+write.table(red_enfermos_thresholdmir, file="red_enfermos_thresholdmir_dpi.txt", sep="\t", col.names=NA, row.names=TRUE, quote=FALSE)
+write.table(red_sanos_thresholdmir, file="red_sanos_thresholdmir_dpi.txt", sep="\t", col.names=NA, row.names=TRUE, quote=FALSE)
+
+write.table(red_enfermos_thresholdgen, file="red_enfermos_thresholdgen_dpi.txt", sep="\t", col.names=NA, row.names=TRUE, quote=FALSE)
+write.table(red_sanos_thresholdgen, file="red_sanos_thresholdgen_dpi.txt", sep="\t", col.names=NA, row.names=TRUE, quote=FALSE)
+
+write.table(red_enfermos_thresholddown, file="red_enfermos_thresholddown_dpi.txt", sep="\t", col.names=NA, row.names=TRUE, quote=FALSE)
+write.table(red_sanos_thresholddown, file="red_sanos_thresholddown_dpi.txt", sep="\t", col.names=NA, row.names=TRUE, quote=FALSE)
+
+write.table(red_enfermos_thresholdup, file="red_enfermos_thresholdup_dpi.txt", sep="\t", col.names=NA, row.names=TRUE, quote=FALSE)
+write.table(red_sanos_thresholdup, file="red_sanos_thresholdup_dpi.txt", sep="\t", col.names=NA, row.names=TRUE, quote=FALSE)
 
 
-
-
+# > dim(red_enfermos_thresholdmir)
+# [1] 43888     3
+# > dim(red_sanos_thresholdmir)
+# [1] 48060     3
+# > dim(red_enfermos_thresholdgen)
+# [1] 27031     3
+# > dim(red_sanos_thresholdgen)
+# [1] 28907     3
+# > dim(red_enfermos_thresholddown)
+# [1] 3877    3
+# > dim(red_sanos_thresholddown)
+# [1] 4018    3
+# > dim(red_enfermos_thresholdup)
+# [1] 321099      3
+# > dim(red_sanos_thresholdup)
+# [1] 328648      3
