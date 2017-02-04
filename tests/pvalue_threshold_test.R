@@ -238,18 +238,19 @@ write.table(red_sanos_thresholdup, file="red_sanos_thresholdup_dpi.txt", sep="\t
 
 
 # > dim(red_enfermos_thresholdmir)
-# [1] 43888     3
+# [1] 33186     3
 # > dim(red_sanos_thresholdmir)
-# [1] 48060     3
+# [1] 41573     3
 # > dim(red_enfermos_thresholdgen)
-# [1] 27031     3
+# [1] 21231     3
 # > dim(red_sanos_thresholdgen)
-# [1] 28907     3
+# [1] 25905     3
 # > dim(red_enfermos_thresholddown)
-# [1] 3877    3
+# [1] 3566    3
 # > dim(red_sanos_thresholddown)
-# [1] 4018    3
+# [1] 3897    3
 # > dim(red_enfermos_thresholdup)
-# [1] 321099      3
+# [1] 251726      3
 # > dim(red_sanos_thresholdup)
-# [1] 328648      3
+# [1] 229248      3
+
