@@ -1,7 +1,10 @@
 
+
 cut -f3- Project_wg_result1486230283_GSEA.gmt > 2
 
 printf 'NaN\n%.0s' {1..354} > 3
+
+paste -d"\t" pathways_names.txt NA pathways_genes.txt > wiki_path.gmt
 
 ################################################################################
 # Running PATHIFIER (Drier et al., 2013)
