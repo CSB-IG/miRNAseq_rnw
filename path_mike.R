@@ -28,6 +28,13 @@ gene_sets <- as.matrix(read.delim(file = file.choose(), header = F, sep = "\t",
                                   as.is = T))
 # wikipath.gmt
 
+# filtra pathways con menos de 5 genes
+gene_sets <- gene_sets[rowSums(is.na(gene_sets)) <= length(colnames(gene_sets)-5), ]
+
+# filtra pathways con mas genes que samples
+gene_sets <- gene_sets[rowSums(is.na(gene_sets)) >= length(colnames(gene_sets)-length(colnames(exp.matrix)), ]
+
+
 #  Generate a list that contains genes in genesets
 gs <- list()
 for (i in 1:nrow(gene_sets)){
