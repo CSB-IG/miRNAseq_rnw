@@ -21,6 +21,9 @@ library(pathifier)
 exp.matrix <- read.delim(file =file.choose(), as.is = T, row.names = 1)
 # matriz_path_ensbl.txt
 
+samples <- scan(file="sample_names_86_matched.txt", what="")
+exp.matrix <- exp.matrix[,samples]
+
 exp.matrix <- log2(exp.matrix+1)
 
 # Load Genesets annotation 
@@ -29,10 +32,10 @@ gene_sets <- as.matrix(read.delim(file = file.choose(), header = F, sep = "\t",
 # wikipath.gmt
 
 # filtra pathways con menos de 5 genes
-gene_sets <- gene_sets[rowSums(is.na(gene_sets)) <= length(colnames(gene_sets)-5), ]
+gene_sets <- gene_sets[rowSums(is.na(gene_sets)) <= length(colnames(gene_sets))-5, ]
 
 # filtra pathways con mas genes que samples
-gene_sets <- gene_sets[rowSums(is.na(gene_sets)) >= length(colnames(gene_sets)-length(colnames(exp.matrix)), ]
+gene_sets <- gene_sets[rowSums(is.na(gene_sets)) >= length(colnames(gene_sets))-length(colnames(exp.matrix)), ]
 
 
 #  Generate a list that contains genes in genesets
@@ -93,7 +96,19 @@ PDS <- quantify_pathways_deregulation(DATASET$data,
                                       DATASET$normals, 
                                       maximize_stability = T,
                                       attempts = 100,
-                                      logfile="logfile.txt",
+                                      logfile="logfile_chr14.txt",
+                                      min_std = min_std,
+                                      min_exp = min_exp)
+
+# Run Pathifier
+PDS <- quantify_pathways_deregulation(DATASET$data, 
+                                      DATASET$allgenes,
+                                      PATHWAYS$gs,
+                                      PATHWAYS$pathwaynames,
+                                      DATASET$normals, 
+                                      maximize_stability = T,
+                                      attempts = 100,
+                                      logfile="logfile_200.txt",
                                       min_std = min_std,
                                       min_exp = min_exp)
 # Remove unnecesary data

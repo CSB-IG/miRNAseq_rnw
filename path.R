@@ -20,6 +20,14 @@ matriz <- cbind(enfermos_m, sanos_m)
 id <- read.table("annot.txt")
 id <- id[rownames(enfermos),]
 
+ch14 <- read.table("genes_chr14.txt")
+id_14 <- id[as.vector(ch14[,1]),]
+write.table(id_14[,2], "ch14_ensembl.txt", sep="\t", quote=F, row.names=F, col.names=F)
+
+mir200 <- read.table("genes_vecinos_mir200_tumores.txt")
+id_mir200 <- id[as.vector(mir200[,1]),]
+write.table(id_mir200[,2], "mir200_ensembl.txt", sep="\t", quote=F, row.names=F, col.names=F)
+
 nombres <- c("NORMALS", id[,2])
 geneid <- c("NORMALS", id[,1])
 
