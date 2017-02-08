@@ -1,4 +1,4 @@
-
+awk '{if(max<NF) {max=NF}} END {print max}' kegg_path_ch14.gmt
 
 cut -f3- Project_wg_result1486230283_GSEA.gmt > 2
 
@@ -12,8 +12,6 @@ paste -d"\t" pathways_names.txt NA pathways_genes.txt > wiki_path.gmt
 ################################################################################
 
 # Install/load package ##############
-source("http://bioconductor.org/biocLite.R")
-if (!require("pathifier")){biocLite("pathifier", ask=FALSE); library(pathifier)}
 
 library(pathifier)
 
@@ -27,9 +25,10 @@ exp.matrix <- exp.matrix[,samples]
 exp.matrix <- log2(exp.matrix+1)
 
 # Load Genesets annotation 
-gene_sets <- as.matrix(read.delim(file = file.choose(), header = F, sep = "\t",
-                                  as.is = T))
-# wikipath.gmt
+gene_sets <- as.matrix(read.delim(file = file.choose(), header = F, sep = "\t", as.is = T))
+                                  
+gene_sets <- read.table(file = file.choose(), header = F, sep = "\t", fill=TRUE, col.names=1)
+# path.gmt
 
 # filtra pathways con menos de 5 genes
 gene_sets <- gene_sets[rowSums(is.na(gene_sets)) <= length(colnames(gene_sets))-5, ]
@@ -88,7 +87,7 @@ allgenes <- as.vector(rownames(exp.matrix))
 DATASET <- list(); DATASET$allgenes <- allgenes; DATASET$normals <- normals
 DATASET$data <- exp.matrix
 
-# Run Pathifier
+# Run Pathifier ch14
 PDS <- quantify_pathways_deregulation(DATASET$data, 
                                       DATASET$allgenes,
                                       PATHWAYS$gs,
@@ -100,7 +99,7 @@ PDS <- quantify_pathways_deregulation(DATASET$data,
                                       min_std = min_std,
                                       min_exp = min_exp)
 
-# Run Pathifier
+# Run Pathifier mir-200
 PDS <- quantify_pathways_deregulation(DATASET$data, 
                                       DATASET$allgenes,
                                       PATHWAYS$gs,
