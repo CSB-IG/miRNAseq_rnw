@@ -1,11 +1,7 @@
-if (!require("plotly")) {
-  install.packages("gplots", dependencies = TRUE)
-  library(gplots)
-}
-if (!require("RColorBrewer")) {
-  install.packages("RColorBrewer", dependencies = TRUE)
-  library(RColorBrewer)
-}
+library(gplots)
+
+library(RColorBrewer)
+
 
 ################################################################################
 # Load Pathifier results and turn into a matrix

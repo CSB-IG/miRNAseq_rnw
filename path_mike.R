@@ -1,4 +1,5 @@
 awk '{if(max<NF) {max=NF}} END {print max}' kegg_path_ch14.gmt
+awk '{ for( i=1; i<391; i++) {printf( $i "\t")}; printf($391 "\n")} ' kegg_path_ch14.gmt > prueba.gmt
 
 cut -f3- Project_wg_result1486230283_GSEA.gmt > 2
 
@@ -27,7 +28,6 @@ exp.matrix <- log2(exp.matrix+1)
 # Load Genesets annotation 
 gene_sets <- as.matrix(read.delim(file = file.choose(), header = F, sep = "\t", as.is = T))
                                   
-gene_sets <- read.table(file = file.choose(), header = F, sep = "\t", fill=TRUE, col.names=1)
 # path.gmt
 
 # filtra pathways con menos de 5 genes
