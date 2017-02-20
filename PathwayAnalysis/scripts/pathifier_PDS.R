@@ -1,11 +1,12 @@
-awk '{if(max<NF) {max=NF}} END {print max}' kegg_path_ch14.gmt
-awk '{ for( i=1; i<391; i++) {printf( $i "\t")}; printf($391 "\n")} ' kegg_path_ch14.gmt > prueba.gmt
+# based on https://github.com/AngelCampos/Pathifier-Tool-Kit
+# awk '{if(max<NF) {max=NF}} END {print max}' kegg_path_ch14.gmt
+# awk '{ for( i=1; i<391; i++) {printf( $i "\t")}; printf($391 "\n")} ' kegg_path_ch14.gmt > prueba.gmt
 
-cut -f3- Project_wg_result1486230283_GSEA.gmt > 2
+# cut -f3- Project_wg_result1486230283_GSEA.gmt > 2
 
-printf 'NaN\n%.0s' {1..354} > 3
+# printf 'NaN\n%.0s' {1..354} > 3
 
-paste -d"\t" pathways_names.txt NA pathways_genes.txt > wiki_path.gmt
+# paste -d"\t" pathways_names.txt NA pathways_genes.txt > wiki_path.gmt
 
 ################################################################################
 # Running PATHIFIER (Drier et al., 2013)
