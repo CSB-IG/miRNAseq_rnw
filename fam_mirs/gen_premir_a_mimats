@@ -1,0 +1,10 @@
+#!/usr/bin/awk -f
+
+# usa al diccionario de nombres mir para reemplarlos por nombre-mir.MIMAT
+
+BEGIN {
+	print "#!/usr/bin/awk -f"
+}
+{
+	print "$NF == \"" $1 "\" { print $0 \"\t" $2 "\"}"
+}

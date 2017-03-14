@@ -1,4 +1,11 @@
-results/%.tabla:	data/%.txt
+results/%.tabla:	results/%.tabla.incompleta	results/premir-a-mimats
+	mkdir -p `dirname $target`
+	results/premir-a-mimats \
+		results/$stem.tabla.incompleta \
+	> $target.build \
+	&& mv $target.build $target
+
+results/%.tabla.incompleta:	data/%.txt
 	mkdir -p `dirname $target`
 	./lista-mirbase-a-tabla \
 		$prereq \
@@ -14,10 +21,20 @@ results/maduro-a-mimat:	dict
 	&& cmhod +x $target.build \
 	&& mv $target.build $target
 
-results/premir-a-mimats:	dict
+dict.pavos:	dict
+	mkdir -p `dirname $target`
+	sed -r \
+		-e 's#-[35]p##g' \
+		-e 's/miR/mir/g' \
+		$prereq \
+	> $target.build \
+	&& mv $target.build $target
+
+results/premir-a-mimats:	dict.pavos
+	mkdir -p `dirname $target`
 	# generador de pavos
 	./gen_premir_a_mimats \
 		$prereq \
 	> $target.build \
-	&& cmhod +x $target.build \
+	&& chmod +x $target.build \
 	&& mv $target.build $target
