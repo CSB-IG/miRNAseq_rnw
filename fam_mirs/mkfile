@@ -1,0 +1,23 @@
+results/%.tabla:	data/%.txt
+	mkdir -p `dirname $target`
+	./lista-mirbase-a-tabla \
+		$prereq \
+	> $target.build \
+	&& mv $target.build $target
+
+results/maduro-a-mimat:	dict
+	mkdir -p `dirname $target`
+	# generador de patos
+	./traductor_mir_mimat \
+		$prereq \
+	> $target.build \
+	&& cmhod +x $target.build \
+	&& mv $target.build $target
+
+results/premir-a-mimats:	dict
+	# generador de pavos
+	./gen_premir_a_mimats \
+		$prereq \
+	> $target.build \
+	&& cmhod +x $target.build \
+	&& mv $target.build $target
