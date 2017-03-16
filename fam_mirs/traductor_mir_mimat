@@ -1,0 +1,13 @@
+#!/usr/bin/awk -f
+
+# usa al diccionario de nombres mir para reemplarlos por nombre-mir.MIMAT
+
+BEGIN {
+	print "#!/bin/sh\nsed -r \\"
+}
+{
+	print "-e 's/" $1 "/" $2 "/g' \\"
+}
+END {
+	print "\"$@\""
+}
