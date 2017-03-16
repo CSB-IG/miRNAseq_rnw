@@ -1,5 +1,6 @@
 #!/bin/bash
-# turns a gmt into a squared matrix for pathifier adding tabs into blank spaces
+# turns a gmt file into a squared matrix for pathifier adding tabs into blank spaces
+# in order to run the pathifier R script correctly
 
 file="$1"
 cols=$(awk '{if(max<NF) {max=NF}} END {print max}' "$file")

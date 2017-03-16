@@ -36,4 +36,4 @@ controls <- rbind(code_controls, controls)
 # create matrix for pathifier in 
 matrix <- cbind(tumours, controls)
 
-write.table(matrix("NORMALS"=rownames(matrix),matrix), "matrix_for_pathifier.txt", row.names=FALSE, sep="\t", quote=F)
+write.table(data.frame("NORMALS"=rownames(matrix),matrix), "matrix_for_pathifier.txt", row.names=FALSE, sep="\t", quote=F)

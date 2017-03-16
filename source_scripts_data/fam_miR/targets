@@ -1,0 +1,6 @@
+#!/bin/sh
+find -L data \
+	-name '*.txt' \
+| sed -r \
+	-e 's#^data/#results/#g' \
+	-e 's#\.txt$#.tabla#g'

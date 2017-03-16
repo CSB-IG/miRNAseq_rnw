@@ -85,5 +85,5 @@ build_mtx <- function(adj_files){
 x <- build_mtx(adj_files)
 
 # save squared matrix
-write.table(c("Names"=rownames(x),x), file = "matrix_MI.txt", sep = "\t", col.names= FALSE, quote = F )
+write.table(data.frame("Names"=rownames(x),x), file = "matrix_MI.txt", sep = "\t", col.names= FALSE, quote = F )
 

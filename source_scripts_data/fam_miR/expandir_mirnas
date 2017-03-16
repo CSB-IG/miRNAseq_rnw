@@ -1,0 +1,21 @@
+#!/usr/bin/awk -f
+
+# este script toma las interacciones de TargetScan por familia y las convierte en interacciones por miRNAs individuales
+
+BEGIN {
+	FS="\t"
+	OFS="\t"
+}
+{
+	gene = $3
+	n = split($1, mir, "/")
+	for (i = 1; i <= n; i++) {
+		start = substr(mir[i], 1, 4)
+		if (start == "miR-" || start == "let-") {
+			prefix = "hsa-" start
+			print "hsa-" mir[i] OFS gene
+		} else {
+			print prefix mir[i] OFS gene
+		}
+	}
+}

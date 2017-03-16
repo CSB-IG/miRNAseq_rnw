@@ -1,0 +1,5 @@
+#!/usr/bin/awk -f
+BEGIN {OFS = "\t"}
+/ID/ {id = $0; next}
+/AC/ {ac = $0; next}
+/MI/ {print id, ac, $0}
