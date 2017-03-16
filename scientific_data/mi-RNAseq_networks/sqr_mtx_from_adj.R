@@ -30,12 +30,12 @@ library(plyr)
 library(minet)
 library(igraph)
 
-# set the directory where the *.adj files are located as the working directory
-# if other dir is used: filenames <- list.files("other_directory", pattern="*.adj")
-adjs <- sort(list.files(pattern="*_1.adj"))
+# Get the location of the *.adj files
+# Write the full path of the directory where the *.adj files are located
+adj_files <- sort(list.files(file.choose(), full.names=TRUE, pattern="*.adj"))
 
 # length must be equal to genes
-length(adjs)
+# length(adjs)
 
 # reads just the last line from file take values as characters
 # converts to matrix and assign first column as rownames 
@@ -48,59 +48,42 @@ adjtosqmtx <- function(g){
   m
 }
 
-# joins all adjs in square matrix and fill empty spaces with NA
-M <- lapply(adjs, adjtosqmtx)
-x <- t(rbind.fill.matrix(M))
-
-# replace all NA for 0
-x[is.na(x)] <- 0
-
-# turn character matrix to numeric
-class(x) <- "numeric"
-
-# sets colnames as the gene/miR name from adjs file name in the directory
-names <- gsub('.{6}$','', adjs)
-colnames(x) <- names
-
-# get miR and gene name lists
-mir <- rownames(x)[grepl("hsa*", rownames(x))]
-genes <- rownames(x)[grepl("^(?!hsa*)", rownames(x), perl=T)]
-
-# makes matrices symmetric with the triangle that has more information
-fullmtx <- function(x,mir,genes){
-	r <- x[,mir]
-	s <- x[mir,]
-	if (sum(is.na(r)) < sum(is.na(s))){
-		b <- rbind((x[genes,genes]), (t(r[genes,])))
-		z <- cbind(r, (b[rownames(r),]))
-		return(z)
-		} else{
-		b <- rbind((x[genes,genes]), (t(s[genes,])))
-		z <- cbind(s, (b[rownames(s),]))
-		return(z)}
-}
-
-# get squared matrix
-x <- fullmtx(x,mir,genes)	
-
-# replace all NA for 0
-x[is.na(x)] <- 0
-
-# turn character matrix to numeric
-class(x) <- "numeric"
-
-# select rownames as colnames and orders them alphabetically
-x <- x[sort(rownames(x)), sort(colnames(x)) ]
-
-isSymmetric(x)
-
 # scale MI values from 0 to 1
 normalit<-function(m){
      (m - min(m[upper.tri(m)]))/(max(m)-min(m[upper.tri(m)]))
 }
 
-x <- normalit(x)
+
+build_mtx <- function(adj_files){
+	#create matrix from individual adjs p-val=1
+	M <- lapply(adj_files, adjtosqmtx)
+	x <- t(rbind.fill.matrix(M))
+	names <- gsub(".*/|_1.adj", "", adj_files)
+	colnames(x) <- names
+	# get mir and gene names
+	mir <- rownames(x)[grepl("hsa*", rownames(x))]
+	genes <- rownames(x)[grepl("^(?!hsa*)", rownames(x), perl=T)]
+	#turn into a squared symmetric matrix
+	# because MI networks are symmestrical the miR adjs were the only
+	# ones that had the miR-gene edges, saving computing time
+	r <- x[,mir]
+	s <- x[mir,]
+	if (sum(is.na(r)) < sum(is.na(s))){
+		b <- rbind((x[genes,genes]), (t(r[genes,])))
+		z <- cbind(r, (b[rownames(r),]))
+		} else{
+		b <- rbind((x[genes,genes]), (t(s[genes,])))
+		z <- cbind(s, (b[rownames(s),]))
+		}
+	z[is.na(z)] <- 0
+	class(z) <- "numeric"
+	z <- z[sort(rownames(z)), sort(colnames(z))]
+	z <- normalit(z)
+	return(z)
+}
+
+x <- build_mtx(adj_files)
 
 # save squared matrix
-write.table(x("Names"=rownames(x),x), file = "matrix_MI.txt", sep = "\t", col.names= NA, row.names= T, quote = F )
+write.table(c("Names"=rownames(x),x), file = "matrix_MI.txt", sep = "\t", col.names= FALSE, quote = F )
 
