@@ -12,6 +12,8 @@
 # Gene3	Value	Value	Value
 # ----------------------------------------------------------------
 
+library("DESeq2")
+
 #################################################################
 # RNA-Seq
 ################################################################
@@ -39,23 +41,18 @@ if (identical(rownames(RNAseq_tumour), rownames(RNAseq_control)) == TRUE){
 	countData_rna <- round((cbind(RNAseq_tumour, RNAseq_control)), 0)
 }
 
-colData_rna <- matrix(c(rep('tumour',  length(colnames(RNAseq_tumour))), rep('control',  length(colnames(RNAseq_control)))))
+colData_rna <- data.frame(c(rep('tumour',  length(colnames(RNAseq_tumour))), rep('control',  length(colnames(RNAseq_control)))))
+
 rownames(colData_rna) <- colnames(countData_rna)
 colnames(colData_rna) <- "condition"
-colData_rna <- as.data.frame(colData_rna)
 
 # ---------------------------------------------------------------
 # DIferential expression RNASeq
 # ---------------------------------------------------------------
 
-library("DESeq2")
-
 dds_rna <-DESeqDataSetFromMatrix(countData = countData_rna, colData = colData_rna, design = ~ condition)
-
 dds_rna <- dds_rna[ rowSums(counts(dds_rna)) > 1, ]
-
 dds_rna$condition <- relevel(dds_rna$condition, ref= "control")
-
 dds_rna <- DESeq(dds_rna)
 
 # ---------------------------------------------------------------
@@ -64,12 +61,6 @@ dds_rna <- DESeq(dds_rna)
 
 res_rna <- results(dds_rna)
 res_rna
-
-# ---------------------------------------------------------------
-# Save Results RNASeq
-# ---------------------------------------------------------------
-
-write.table(res_rna, file="DE_RNAseq.txt", sep="\t", quote=F, col.names=NA, row.names=T)
 
 #################################################################
 # micro-RNA-Seq
@@ -95,18 +86,12 @@ control_mir <- read.table('raw_expression_mature_mirnaseq_control.txt', header=T
 
 
 miRNAseq_tumour <- miRNAseq_tumour[(intersect(rownames(miRNAseq_control), rownames(miRNAseq_tumour))),]
-
 identical(rownames(miRNAseq_tumour), rownames(miRNAseq_control))
-
 countData_mirna <- round((cbind(miRNAseq_tumour, miRNAseq_control)), 0)
-
-colData_mirna <- matrix(c(rep('tumour',  length(colnames(miRNAseq_tumour))), rep('control',  length(colnames(miRNAseq_control)))))
-
+colData_mirna <- data.frame(c(rep('tumour',  length(colnames(miRNAseq_tumour))), rep('control',  length(colnames(miRNAseq_control)))))
 rownames(colData_mirna) <- colnames(countData_mirna)
-
 colnames(colData_mirna) <- "condition"
 
-colData_mirna <- as.data.frame(colData_mirna)
 
 # ---------------------------------------------------------------
 # Diferential expression miRNASeq
@@ -115,11 +100,8 @@ colData_mirna <- as.data.frame(colData_mirna)
 library("DESeq2")
 
 dds_mirna <-DESeqDataSetFromMatrix(countData = countData_mirna, colData = colData_mirna, design = ~ condition)
-
 dds_mirna <- dds_mirna[ rowSums(counts(dds_mirna)) > 1, ]
-
 dds_mirna$condition <- relevel(dds_mirna$condition, ref= "control")
-
 dds_mirna <- DESeq(dds_mirna)
 
 # ---------------------------------------------------------------
@@ -130,7 +112,9 @@ res_mirna <- results(dds_mirna)
 res_mirna
 
 # ---------------------------------------------------------------
-# Save Results miRNASeq
+# Save Results
 # ---------------------------------------------------------------
 
-write.table(res_mirna, file="DE_mir.txt", sep="\t", quote=F, col.names=NA, row.names=T)
+results <- rbind(res_rna, res_mirna)
+
+write.table(results, file="DE_results.txt", sep="\t", quote=F, col.names=NA, row.names=T)
